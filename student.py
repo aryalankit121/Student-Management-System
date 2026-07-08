@@ -1,0 +1,16 @@
+class Student:
+    def __init__(self,first_name,last_name,student_id,major,year,gpa,email):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.student_id = student_id
+        self.major = major
+        self.year = year
+        self.gpa = gpa
+        self.email = email
+    def display(self):
+        print(f"ID: {self.student_id}")
+        print(f"Name: {self.first_name} {self.last_name}")
+        print(f"Major: {self.major}")
+        print(f"Year: {self.year}")
+        print(f"GPA: {self.gpa}")
+        print(f"Email: {self.email}")
