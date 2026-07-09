@@ -8,10 +8,11 @@ class Student:
         self.gpa = gpa
         self.email = email
     def display(self):
-        print("-----------------------")
+        print("----------------------------------")
         print(f"ID: {self.student_id}")
         print(f"Name: {self.first_name} {self.last_name}")
         print(f"Major: {self.major}")
         print(f"Year: {self.year}")
         print(f"GPA: {self.gpa}")
         print(f"Email: {self.email}")
+        print("----------------------------------")

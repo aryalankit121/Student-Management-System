@@ -1,4 +1,5 @@
 import sqlite3
+from student import Student
 
 def setup_database():
     connection = sqlite3.connect("students.db")
@@ -51,11 +52,24 @@ def get_all_students():
     cursor.execute(
         "SELECT * FROM students"
     )
-    all_students = cursor.fetchall()
 
+    all_students = []
+    row = cursor.fetchone()
+    while (row is not None):
+        student = Student(
+            row[1],
+            row[2],
+            row[0],
+            row[3],
+            row[4],
+            row[5],
+            row[6]
+            )
+        all_students.append(student)
+        row = cursor.fetchone()
     connection.close()
-
     return all_students
+
 
 def get_student_by_id(student_id):
     connection = sqlite3.connect("students.db")
@@ -65,9 +79,51 @@ def get_student_by_id(student_id):
     cursor.execute(
         "SELECT * FROM students WHERE student_id = ?",(student_id,)
     )
-    student = cursor.fetchone()
+    
+    row = cursor.fetchone()
+    connection.close()
+    if row is None:
+        return None
+    student = Student(
+    row[1],
+    row[2],
+    row[0],
+    row[3],
+    row[4],
+    row[5],
+    row[6]
+)
+
+    return student
+
+
+    
+def update_student_gpa(student_id, new_gpa):
+    connection = sqlite3.connect("students.db")
+
+    cursor = connection.cursor()
+
+    cursor.execute(
+        "UPDATE students SET gpa = ? WHERE student_id = ?",(new_gpa,student_id)
+    )
+
+    connection.commit()
     connection.close()
 
-    print(student)
-    
+def delete_student(student_id):
+    connection = sqlite3.connect("students.db")
 
+    cursor = connection.cursor()
+
+    cursor.execute(
+        "DELETE FROM students WHERE student_id = ?",(student_id,)
+    )
+
+    connection.commit()
+    connection.close()
+
+def does_student_exist(student_id):
+    if (get_student_by_id(student_id) is None):
+        return False
+    else:
+        return True
