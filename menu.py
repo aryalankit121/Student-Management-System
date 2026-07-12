@@ -11,6 +11,20 @@ def print_menu():
     print("6. Exit ")
     print()
 
+def get_valid_integer(prompt_text, error_message):
+    while True:
+        try:
+            return int(input(prompt_text))
+        except ValueError:
+            print(f"\033[91m{error_message}\033[0m\n")
+
+def get_valid_float(prompt_text, error_message):
+    while True:
+        try:
+            return float(input(prompt_text))
+        except ValueError:
+            print(f"\033[91m{error_message}\033[0m\n")
+
 def start():
     print("---------Welcome to the Student-Management-System---------")
     print()
@@ -20,17 +34,37 @@ def start():
         print()
         print("Here's the menu:")
         print_menu()
-        choice = int(input("Enter a number (1-6) that aligns with your choice: "))
+
+        choice = get_valid_integer(
+            "Enter a number (1-6) that aligns with your choice: ",
+            "Invalid choice! Please enter a number."
+        )
+
         if choice == 1:
+            while True:
+                # We use the helper function just for the ID
+                student_id = get_valid_integer(
+                    "Enter the Student ID (example: 1111): ",
+                    "Invalid ID! Please enter a number for ID, not text."
+                )
+
+                if database.does_student_exist(student_id):
+                    print("\033[91m\nError: A student with this ID already exists!\033[0m")
+                else:
+                    break
+            
             first_name = input("Enter the First name: ")
             last_name = input("Enter the Last name: ")
-            student_id = int(input("Enter the Student ID: "))
             major = input("Enter the Major: ")
-            year = int(input("Enter the Year of Graduation: "))
-            gpa = float(input("Enter the GPA: "))
+            
+            year = get_valid_integer("Enter the Year of Graduation: ", "Error: Year must be a number.")
+            gpa = get_valid_float("Enter the GPA: ", "Error: GPA must be a number with decimals.")
             email = input("Enter the email address: ")
-            student = Student(first_name,last_name,student_id,major,year,gpa,email)
+            
+            student = Student(first_name, last_name, student_id, major, year, gpa, email)
             database.add_student(student)
+            
+            print("\033[92m\nSuccess: Student Successfully Added!\033[0m")
 
         elif choice == 2:
             students = database.get_all_students()
@@ -38,34 +72,108 @@ def start():
                 student.display()
         
         elif choice == 3:
-            student_id = int(input("What is the Student ID of the Student that you would like to search for: "))
+            student_id = get_valid_integer(
+            "What is the Student ID of the Student that you would like to search for (example: 1111): ",
+            "Invalid ID! Please enter a number for ID, not text."
+        )
+            
             student = database.get_student_by_id(student_id)
+
             if student is None:
-                print("\nStudent not found.")
+                print("\033[91m\nError: Student not found.\033[0m")
+            else:
+                student.display()
+
+
+        elif choice == 4:
+            student_id = get_valid_integer(
+            "What is the Student ID of the Student that you would like to Update (example: 1111): ",
+            "Invalid ID! Please enter a number for ID, not text."
+            )
+            
+            if (database.does_student_exist(student_id)):
+                print("\nWhat would you like to update from the menu: ")
+                print("1. First Name")
+                print("2. Last Name")
+                print("3. Major")
+                print("4. Year")
+                print("5. GPA")
+                print("6. Email")
+                
+                # FIX 1: Secure the menu choice
+                update_choice = get_valid_integer(
+                    "Choose the number (1-6) that aligns with your interest: ",
+                    "Invalid choice! Please enter a number (1-6)."
+                )
+
+                if update_choice == 1:
+                    new_first_name = input("What is the updated First Name: ")
+                    database.update_student_first_name(student_id, new_first_name)
+
+                elif update_choice == 2:
+                    new_last_name = input("What is the updated Last Name: ")
+                    database.update_student_last_name(student_id, new_last_name)
+                
+                elif update_choice == 3:
+                    new_major = input("What is the updated Major: ")
+                    database.update_student_major(student_id, new_major)
+                
+                elif update_choice == 4:
+                    # FIX 2: Secure the year input
+                    new_year = get_valid_integer("What is the updated Year: ", "Error: Year must be a number.")
+                    database.update_student_year(student_id, new_year)
+
+                elif update_choice == 5:
+                    # FIX 3: Secure the GPA input
+                    new_gpa = get_valid_float("What is the updated GPA: ", "Error: GPA must be a number with decimals.")
+                    database.update_student_gpa(student_id, new_gpa)
+    
+                elif update_choice == 6:
+                    new_email = input("What is the updated Email: ")
+                    database.update_student_email(student_id, new_email)
+                
+                else:
+                    print("\033[91m\nPlease enter a number (1-6) that aligns with the menu...\033[0m")
+                    continue
+                
+                print("\033[92m\nSuccess: Student Successfully Updated!\033[0m")
+                print("\nHere is the Student's updated data: ")
+                student = database.get_student_by_id(student_id)
+                student.display()
+            else:
+                print("\033[91m\nError: Student not found.\033[0m")
+
+        elif choice == 5:
+            student_id = get_valid_integer(
+                "What is the Student ID of the Student that you would like to Delete (example: 1111): ",
+                "Invalid ID! Please enter a number for ID, not text."
+            )
+
+            student = database.get_student_by_id(student_id)
+
+            if student is None:
+                print("\033[91m\nError: Student not found.\033[0m")
             else:
                 student.display()
             
-        
-        elif choice == 4:
-            student_id = int(input("What is the Student ID of the Student that you would like to Update : "))
-            print("//Considering an update of GPA since we don't have the function for others yet//")
-            if (database.does_student_exist(student_id)):
-                new_gpa = float(input("What is the updated GPA: "))
-                database.update_student_gpa(student_id,new_gpa)
-            else:
-                print("\nStudent not found.")
-
-        elif choice == 5:
-            student_id = int(input("What is the Student ID of the Student that you would like to Delete : "))
-            if(database.does_student_exist(student_id)):
-                database.delete_student(student_id)
-            else:
-                print("\nStudent not found.")
+                confirm = input("\033[91mAre you sure you want to permanently delete this student? (y/n): \033[0m").strip().lower()
+                
+                if confirm in ("y", "yes"):
+                    database.delete_student(student_id)
+                    print("\033[92m\nSuccess: Student Successfully Deleted!\033[0m")
+                else:
+                    print("\nDeletion canceled. Returning to main menu.")
         
         elif choice == 6:
-            print("You chose to quit the Program. Have a great day. Exiting....")
-            break
+            quit_confirmation = input("\033[91m\nAre you sure you want to quit? Press 1 if you want to quit; Press any other key to continue: \033[0m")
+            
+            if(quit_confirmation == '1'):
+                print("You chose to quit the Program. Have a great day. Exiting....")
+                break
+            else:
+                continue
         
         else:
-            print("Invalid choice! Please choose a number (1-6) from menu...")
+            print("\033[91mInvalid choice! Please choose a number (1-6) from menu...\033[0m")
+            
 

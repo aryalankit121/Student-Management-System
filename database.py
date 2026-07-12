@@ -110,6 +110,61 @@ def update_student_gpa(student_id, new_gpa):
     connection.commit()
     connection.close()
 
+def update_student_first_name(student_id, new_first_name):
+    connection = sqlite3.connect("students.db")
+
+    cursor = connection.cursor()
+    
+    cursor.execute(
+        "UPDATE students SET first_name = ? WHERE student_id = ?",(new_first_name, student_id)
+    )
+    connection.commit()
+    connection.close()
+
+def update_student_last_name(student_id, new_last_name):
+    connection = sqlite3.connect("students.db")
+
+    cursor = connection.cursor()
+    
+    cursor.execute(
+        "UPDATE students SET last_name = ? WHERE student_id = ?",(new_last_name, student_id)
+    )
+    connection.commit()
+    connection.close()
+
+def update_student_major(student_id, new_major):
+    connection = sqlite3.connect("students.db")
+
+    cursor = connection.cursor()
+    
+    cursor.execute(
+        "UPDATE students SET major = ? WHERE student_id = ?",(new_major, student_id)
+    )
+    connection.commit()
+    connection.close()
+
+def update_student_year(student_id,new_year):
+    connection = sqlite3.connect("students.db")
+
+    cursor = connection.cursor()
+    
+    cursor.execute(
+        "UPDATE students SET year = ? WHERE student_id = ?",(new_year, student_id)
+    )
+    connection.commit()
+    connection.close()
+
+def update_student_email(student_id,new_email):
+    connection = sqlite3.connect("students.db")
+
+    cursor = connection.cursor()
+    
+    cursor.execute(
+        "UPDATE students SET email = ? WHERE student_id = ?",(new_email, student_id)
+    )
+    connection.commit()
+    connection.close()
+
 def delete_student(student_id):
     connection = sqlite3.connect("students.db")
 
