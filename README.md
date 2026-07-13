@@ -1,38 +1,49 @@
 # Student Management System
 
-A command-line **Student Management System** built with **Python** and **SQLite** that demonstrates object-oriented programming, database design, SQL operations, and clean software architecture. This project was developed as a backend learning project to strengthen my understanding of databases, CRUD operations, data validation, and modular application design.
+A modular command-line **Student Management System** built with **Python** and **SQLite** that demonstrates object-oriented programming, database design, SQL operations, and clean software architecture.
+
+This project was developed as a backend learning project to strengthen my understanding of databases, CRUD operations, input validation, exception handling, and modular application design.
 
 ---
 
 ## Features
 
-* Add new students to a SQLite database
-* View all students
-* Search students by **Student ID** or **Name**
-* Update any student field through a dynamic SQL update system
-* Delete students with confirmation prompts
-* View students sorted by GPA using SQL `ORDER BY` (Ascending/Descending)
-* Export all student records to a CSV file
-* Validate user input with:
-
-  * Regular Expressions (Regex) for email formatting
-  * GPA range validation (0.0–4.0)
-  * Numeric type checking
-* Prevent duplicate Student IDs
-* Interactive command-line interface
-* Object-oriented design using a `Student` class
-* Modular project architecture
+- Add new students to a SQLite database
+- View all students
+- Search students by **Student ID** or **Name**
+- Update any student field through a dynamic SQL update system
+- Delete students with confirmation prompts
+- View students sorted by GPA using SQL `ORDER BY`
+  - Ascending
+  - Descending
+- View a **Database Statistics Dashboard**, including:
+  - Total students
+  - Total unique majors
+  - Average GPA
+  - Highest GPA
+  - Lowest GPA
+  - Student distribution by major
+- Export all student records to a CSV file
+- Robust input validation:
+  - Email validation using Regular Expressions (Regex)
+  - GPA range validation (0.0–4.0)
+  - Numeric type checking
+- Prevent duplicate Student IDs
+- Interactive command-line interface
+- Object-oriented design using a `Student` class
+- Modular project architecture with reusable utility functions
 
 ---
 
 ## Technologies Used
 
-* Python 3
-* SQLite3
-* SQL
-* Regular Expressions (`re`)
-* CSV File Handling (`csv`)
-* Git & GitHub
+- Python 3
+- SQLite3
+- SQL
+- Regular Expressions (`re`)
+- CSV (`csv`)
+- Git
+- GitHub
 
 ---
 
@@ -45,33 +56,31 @@ Student-Management-System/
 ├── menu.py          # Command-line user interface
 ├── database.py      # Database operations and SQL queries
 ├── student.py       # Student class
-├── utils.py         # Helper functions
+├── utils.py         # Helper validation functions
 ├── students.db      # SQLite database (generated at runtime)
 ├── students.csv     # Exported student records (generated on demand)
 └── README.md
-```
-
 ```
 
 ---
 
 ## Current Progress
 
-* ✅ Designed the `Student` class using Object-Oriented Programming
-* ✅ Designed a relational SQLite database for persistent storage
-* ✅ Implemented complete CRUD functionality
-
-  * Create students
-  * Read student records
-  * Update every student field
-  * Delete students
-* ✅ Implemented student search by ID and Name
-* ✅ Built an interactive command-line interface
-* ✅ Converted SQL records into Python `Student` objects
-* ✅ Organized the project into separate modules
-* ✅ Added robust input validation and error handling
-* ✅ Implemented GPA sorting using SQL `ORDER BY`
-* ✅ Added CSV export functionality
+- ✅ Designed the `Student` class using Object-Oriented Programming
+- ✅ Designed a relational SQLite database for persistent storage
+- ✅ Implemented complete CRUD functionality
+  - Create student records
+  - Read student records
+  - Update student information
+  - Delete student records
+- ✅ Implemented student search by Student ID and Name
+- ✅ Built an interactive command-line interface
+- ✅ Converted SQL records into Python `Student` objects
+- ✅ Organized the project into separate modules
+- ✅ Added robust input validation and exception handling
+- ✅ Implemented GPA sorting using SQL `ORDER BY`
+- ✅ Built a Database Statistics Dashboard
+- ✅ Added CSV export functionality with file error handling
 
 ---
 
@@ -89,7 +98,7 @@ git clone https://github.com/aryalankit121/Student-Management-System.git
 cd Student-Management-System
 ```
 
-### 3. Run the program
+### 3. Run the application
 
 ```bash
 python main.py
@@ -99,37 +108,40 @@ The SQLite database will automatically be created the first time the application
 
 ---
 
-## Planned Improvements
+## Skills Demonstrated
 
-* Database statistics dashboard
-* Unit testing with `pytest`
-* REST API using Flask
-* Web interface
-* Authentication/Login system
-* Advanced search filters (Major, Graduation Year, GPA)
+This project helped me gain practical experience with:
+
+- Object-Oriented Programming (OOP)
+- SQL and relational databases
+- SQLite integration with Python
+- CRUD application development
+- Modular software architecture
+- Input validation
+- Regular Expressions (Regex)
+- CSV file handling
+- Exception handling
+- Git version control
+- GitHub workflow
 
 ---
 
-## Learning Objectives
+## Planned Improvements
 
-This project has helped me gain practical experience with:
-
-* Object-Oriented Programming (OOP)
-* SQL and relational databases
-* SQLite integration with Python
-* CRUD operations
-* Modular software architecture
-* Data validation
-* Regular Expressions (Regex)
-* CSV file handling
-* Error handling
-* Version control with Git and GitHub
+- Unit testing with `pytest`
+- Advanced search filters
+  - Major
+  - Graduation Year
+  - GPA range
+- REST API using Flask
+- Authentication/Login system
+- Web interface
 
 ---
 
 ## Screenshots
 
-*Screenshots of the application will be added as development progresses.*
+Screenshots and demonstrations of the application will be added as development progresses.
 
 ---
 
@@ -137,5 +149,7 @@ This project has helped me gain practical experience with:
 
 **Ankit Aryal**
 
-Computer Science Student
+Computer Science Student  
 Catawba College
+
+GitHub: **https://github.com/aryalankit121**
