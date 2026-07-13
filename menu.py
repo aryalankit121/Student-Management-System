@@ -1,6 +1,6 @@
 from student import Student
 import database
-import re
+from utils import get_valid_integer, get_valid_float, get_valid_email
 
 def print_menu():
     print()
@@ -11,45 +11,9 @@ def print_menu():
     print("5. Delete a Student")
     print("6. Export Students to CSV")
     print("7. View Students sorted based on GPA")
-    print("8. Exit ")
+    print("8. View Database Statistics")
+    print("9. Exit ")
     print()
-
-def get_valid_integer(prompt_text, error_message):
-    while True:
-        try:
-            return int(input(prompt_text))
-        except ValueError:
-            print(f"\033[91m{error_message}\033[0m\n")
-
-def get_valid_float(prompt_text, error_message, min_value=None, max_value=None):
-    while True:
-        try:
-            value = float(input(prompt_text))
-
-            if min_value is not None and value < min_value:
-                print(f"\033[91mValue must be at least {min_value}.\033[0m\n")
-                continue
-
-            if max_value is not None and value > max_value:
-                print(f"\033[91mValue must be at most {max_value}.\033[0m\n")
-                continue
-
-            return value
-
-        except ValueError:
-            print(f"\033[91m{error_message}\033[0m\n")
-
-def get_valid_email(prompt_text, error_message):
-    while True:
-        email = input(prompt_text).strip()
-
-        pattern = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
-
-        if re.fullmatch(pattern, email):
-            return email
-        
-        print(f"\033[91m{error_message}\033[0m\n")
-            
 
 def start():
     print("---------Welcome to the Student-Management-System---------")
@@ -62,7 +26,7 @@ def start():
         print_menu()
 
         choice = get_valid_integer(
-            "Enter a number (1-8) that aligns with your choice: ",
+            "Enter a number (1-9) that aligns with your choice: ",
             "Invalid choice! Please enter a number."
         )
 
@@ -229,13 +193,22 @@ def start():
                     print("\nDeletion canceled. Returning to main menu.")
         
         elif choice == 6:
-            print("\nExporting the Student database to CSV")
-            success = database.export_students_to_csv()
-            
-            if success:
-                print("\033[92mSuccess: Data exported to 'students.csv'!\033[0m")
-            else:
-                print("\033[93m\nNo students in the database to export.\033[0m")
+            print("\nExporting the student database to CSV...")
+
+            try:
+                result = database.export_students_to_csv()
+
+                if result:
+                    print("\033[92m\nSuccess: Data exported to 'students.csv'!\033[0m")
+
+                else:
+                    print("\033[93m\nNo students in the database to export.\033[0m")
+
+            except PermissionError:
+                print("\033[91m\nError: Permission denied. Please close 'students.csv' if it is open in another program and try again.\033[0m")
+
+            except OSError as error:
+                print(f"\033[91m\nAn unexpected file error occurred: {error}\033[0m")
 
         elif choice == 7:
             print("\nHow do you want the students to be sorted: ")
@@ -263,6 +236,29 @@ def start():
                     student.display()
 
         elif choice == 8:
+            stats = database.get_database_statistics()
+            if stats is None:
+                print("\033[93m\nNo students in the database to analyze.\033[0m")
+            else:
+                print("\nCalculating Database Statistics...")
+                print("\033[96m")
+                print(" DATABASE STATISTICS ".center(40, "="))
+                print(f"\n{'Total Students Enrolled:':30} {stats['total_students']}")
+                print(f"{'Total Unique Majors:':30} {stats['total_majors']}")
+                print(f"\n{'Overall Average GPA:':30} {stats['avg_gpa']}")
+                print(f"{'Highest GPA:':30} {stats['max_gpa']}")
+                print(f"{'Lowest GPA:':30} {stats['min_gpa']}")
+                print("-" * 40)
+
+                print("\nStudent Distribution by Major:")
+                print("-" * 40)
+                for major,count in stats['major_counts']:
+                    print(f"  • {major:<20}: {count} student(s)")
+                print()
+                print("=" * 40)
+                print("\033[0m")
+
+        elif choice == 9:
             quit_confirmation = input("\033[91m\nAre you sure you want to quit? Press 1 if you want to quit; Press any other key to continue: \033[0m")
             
             if(quit_confirmation == '1'):
@@ -272,6 +268,4 @@ def start():
                 continue
         
         else:
-            print("\033[91mInvalid choice! Please choose a number (1-8) from menu...\033[0m")
-            
-
+            print("\033[91mInvalid choice! Please choose a number (1-9) from menu...\033[0m")

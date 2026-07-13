@@ -151,6 +151,44 @@ def delete_student(student_id):
     connection.commit()
     connection.close()
 
+def get_database_statistics():
+    connection = sqlite3.connect("students.db")
+
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM students")
+    total_students = cursor.fetchone()[0]
+
+    if total_students == 0:
+        connection.close()
+        return None
+
+    cursor.execute("SELECT AVG(gpa) FROM students")
+    avg_gpa = round(cursor.fetchone()[0],2)
+
+    cursor.execute("SELECT MAX(gpa) FROM students")
+    max_gpa = round(cursor.fetchone()[0],2)
+
+    cursor.execute("SELECT MIN(gpa) FROM students")
+    min_gpa = round(cursor.fetchone()[0],2)
+
+    cursor.execute("SELECT major, COUNT(*) FROM students GROUP BY major ORDER BY COUNT(*) DESC")
+    major_counts = cursor.fetchall()
+
+    cursor.execute("SELECT COUNT(DISTINCT major) FROM students")
+    total_majors = cursor.fetchone()[0]
+
+    connection.close()
+
+    return {
+        "total_students": total_students,
+        "avg_gpa": avg_gpa,
+        "max_gpa": max_gpa,
+        "min_gpa": min_gpa,
+        "major_counts": major_counts,
+        "total_majors": total_majors
+    }
+
 def get_students_sorted_by_gpa(descending = True):
     connection = sqlite3.connect("students.db")
 
@@ -189,9 +227,11 @@ def does_student_exist(student_id):
     
 def export_students_to_csv():
     students = get_all_students()
+
     if len(students) == 0:
         return False
-    with open("students.csv","w",newline="") as file:
+
+    with open("students.csv", "w", newline="") as file:
         writer = csv.writer(file)
 
         writer.writerow([
@@ -213,6 +253,6 @@ def export_students_to_csv():
                 student.year,
                 student.gpa,
                 student.email
-])
-    return True
+            ])
 
+    return True

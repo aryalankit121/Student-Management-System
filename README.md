@@ -46,8 +46,11 @@ Student-Management-System/
 ├── database.py      # Database operations and SQL queries
 ├── student.py       # Student class
 ├── utils.py         # Helper functions
-├── students.db      # SQLite database (ignored by Git)
+├── students.db      # SQLite database (generated at runtime)
+├── students.csv     # Exported student records (generated on demand)
 └── README.md
+```
+
 ```
 
 ---
