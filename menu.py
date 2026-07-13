@@ -68,22 +68,47 @@ def start():
 
         elif choice == 2:
             students = database.get_all_students()
-            for student in students:
-                student.display()
+            if len(students) == 0:
+                print("\033[93m\nNo students in the database.\033[0m")
+            else:
+                for student in students:
+                    student.display()
         
         elif choice == 3:
-            student_id = get_valid_integer(
-            "What is the Student ID of the Student that you would like to search for (example: 1111): ",
-            "Invalid ID! Please enter a number for ID, not text."
-        )
+            print("\nHow would you like to search?")
+            print("1. Search by Student ID")
+            print("2. Search by Name")
+        
+            search_choice = get_valid_integer(
+            "Choose an option (1-2): ",
+            "Invalid choice! Please enter a number."
+            )
+        
+            if search_choice == 1:
+                student_id = get_valid_integer(
+                    "What is the Student ID of the Student that you would like to search for (example: 1111): ",
+                    "Invalid ID! Please enter a number for ID, not text."
+                )
             
-            student = database.get_student_by_id(student_id)
+                student = database.get_student_by_id(student_id)
 
-            if student is None:
-                print("\033[91m\nError: Student not found.\033[0m")
+                if student is None:
+                    print("\033[91m\nError: Student not found with that ID.\033[0m")
+                else:
+                    student.display()
+                
+            elif search_choice == 2:
+                name_query = input("Enter the first or last name to search for: ").strip()
+                results = database.get_students_by_name(name_query)
+                
+                if len(results) == 0:
+                    print("\033[91m\nError: No students found matching that name.\033[0m")
+                else:
+                    print(f"\033[92m\nFound {len(results)} student(s):\033[0m")
+                    for student in results:
+                        student.display()
             else:
-                student.display()
-
+                print("\033[91m\nInvalid choice! Returning to menu...\033[0m")
 
         elif choice == 4:
             student_id = get_valid_integer(
@@ -108,29 +133,29 @@ def start():
 
                 if update_choice == 1:
                     new_first_name = input("What is the updated First Name: ")
-                    database.update_student_first_name(student_id, new_first_name)
+                    database.update_student_field(student_id, "first_name", new_first_name)
 
                 elif update_choice == 2:
                     new_last_name = input("What is the updated Last Name: ")
-                    database.update_student_last_name(student_id, new_last_name)
+                    database.update_student_field(student_id, "last_name", new_last_name)
                 
                 elif update_choice == 3:
                     new_major = input("What is the updated Major: ")
-                    database.update_student_major(student_id, new_major)
+                    database.update_student_field(student_id, "major", new_major)
                 
                 elif update_choice == 4:
                     # FIX 2: Secure the year input
                     new_year = get_valid_integer("What is the updated Year: ", "Error: Year must be a number.")
-                    database.update_student_year(student_id, new_year)
+                    database.update_student_field(student_id, "year", new_year)
 
                 elif update_choice == 5:
                     # FIX 3: Secure the GPA input
                     new_gpa = get_valid_float("What is the updated GPA: ", "Error: GPA must be a number with decimals.")
-                    database.update_student_gpa(student_id, new_gpa)
+                    database.update_student_field(student_id, "gpa", new_gpa)
     
                 elif update_choice == 6:
                     new_email = input("What is the updated Email: ")
-                    database.update_student_email(student_id, new_email)
+                    database.update_student_field(student_id, "email", new_email)
                 
                 else:
                     print("\033[91m\nPlease enter a number (1-6) that aligns with the menu...\033[0m")

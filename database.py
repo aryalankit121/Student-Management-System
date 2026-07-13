@@ -53,9 +53,12 @@ def get_all_students():
         "SELECT * FROM students"
     )
 
+    rows = cursor.fetchall()
+    connection.close()
+    
     all_students = []
-    row = cursor.fetchone()
-    while (row is not None):
+
+    for row in rows:
         student = Student(
             row[1],
             row[2],
@@ -66,8 +69,8 @@ def get_all_students():
             row[6]
             )
         all_students.append(student)
-        row = cursor.fetchone()
-    connection.close()
+
+
     return all_students
 
 
@@ -96,75 +99,45 @@ def get_student_by_id(student_id):
 
     return student
 
-
-    
-def update_student_gpa(student_id, new_gpa):
+def get_students_by_name(search_term):
     connection = sqlite3.connect("students.db")
-
     cursor = connection.cursor()
 
-    cursor.execute(
-        "UPDATE students SET gpa = ? WHERE student_id = ?",(new_gpa,student_id)
-    )
+    query = "SELECT * FROM students WHERE first_name LIKE ? OR last_name LIKE ?"
+    
+    cursor.execute(query, (f"%{search_term}%", f"%{search_term}%"))
+
+    rows = cursor.fetchall()
+    connection.close()
+
+    found_students = []
+
+    for row in rows:
+        student = Student(
+            row[1],
+            row[2],
+            row[0],
+            row[3],
+            row[4],
+            row[5],
+            row[6]
+        )
+        found_students.append(student)
+        
+    return found_students
+
+def update_student_field(student_id, column_name, new_value):
+    connection = sqlite3.connect("students.db")
+    cursor = connection.cursor()
+
+    # We use an f-string for the column_name, but we still use '?' for the value to keep it safe!
+    query = f"UPDATE students SET {column_name} = ? WHERE student_id = ?"
+    
+    cursor.execute(query, (new_value, student_id))
 
     connection.commit()
     connection.close()
-
-def update_student_first_name(student_id, new_first_name):
-    connection = sqlite3.connect("students.db")
-
-    cursor = connection.cursor()
     
-    cursor.execute(
-        "UPDATE students SET first_name = ? WHERE student_id = ?",(new_first_name, student_id)
-    )
-    connection.commit()
-    connection.close()
-
-def update_student_last_name(student_id, new_last_name):
-    connection = sqlite3.connect("students.db")
-
-    cursor = connection.cursor()
-    
-    cursor.execute(
-        "UPDATE students SET last_name = ? WHERE student_id = ?",(new_last_name, student_id)
-    )
-    connection.commit()
-    connection.close()
-
-def update_student_major(student_id, new_major):
-    connection = sqlite3.connect("students.db")
-
-    cursor = connection.cursor()
-    
-    cursor.execute(
-        "UPDATE students SET major = ? WHERE student_id = ?",(new_major, student_id)
-    )
-    connection.commit()
-    connection.close()
-
-def update_student_year(student_id,new_year):
-    connection = sqlite3.connect("students.db")
-
-    cursor = connection.cursor()
-    
-    cursor.execute(
-        "UPDATE students SET year = ? WHERE student_id = ?",(new_year, student_id)
-    )
-    connection.commit()
-    connection.close()
-
-def update_student_email(student_id,new_email):
-    connection = sqlite3.connect("students.db")
-
-    cursor = connection.cursor()
-    
-    cursor.execute(
-        "UPDATE students SET email = ? WHERE student_id = ?",(new_email, student_id)
-    )
-    connection.commit()
-    connection.close()
-
 def delete_student(student_id):
     connection = sqlite3.connect("students.db")
 
