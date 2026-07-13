@@ -8,7 +8,8 @@ def print_menu():
     print("3. Search for a Student")
     print("4. Update a Student's data")
     print("5. Delete a Student")
-    print("6. Exit ")
+    print("6. Export Students to CSV")
+    print("7. Exit ")
     print()
 
 def get_valid_integer(prompt_text, error_message):
@@ -36,7 +37,7 @@ def start():
         print_menu()
 
         choice = get_valid_integer(
-            "Enter a number (1-6) that aligns with your choice: ",
+            "Enter a number (1-7) that aligns with your choice: ",
             "Invalid choice! Please enter a number."
         )
 
@@ -71,6 +72,7 @@ def start():
             if len(students) == 0:
                 print("\033[93m\nNo students in the database.\033[0m")
             else:
+                print("\033[92m\nViewing all students in the database:\033[0m")
                 for student in students:
                     student.display()
         
@@ -190,6 +192,15 @@ def start():
                     print("\nDeletion canceled. Returning to main menu.")
         
         elif choice == 6:
+            print("\nExporting the Student database to CSV")
+            success = database.export_students_to_csv()
+            
+            if success:
+                print("\033[92mSuccess: Data exported to 'students.csv'!\033[0m")
+            else:
+                print("\033[93m\nNo students in the database to export.\033[0m")
+
+        elif choice == 7:
             quit_confirmation = input("\033[91m\nAre you sure you want to quit? Press 1 if you want to quit; Press any other key to continue: \033[0m")
             
             if(quit_confirmation == '1'):
@@ -199,6 +210,6 @@ def start():
                 continue
         
         else:
-            print("\033[91mInvalid choice! Please choose a number (1-6) from menu...\033[0m")
+            print("\033[91mInvalid choice! Please choose a number (1-7) from menu...\033[0m")
             
 

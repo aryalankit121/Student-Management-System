@@ -1,5 +1,6 @@
 import sqlite3
 from student import Student
+import csv
 
 def setup_database():
     connection = sqlite3.connect("students.db")
@@ -55,7 +56,7 @@ def get_all_students():
 
     rows = cursor.fetchall()
     connection.close()
-    
+
     all_students = []
 
     for row in rows:
@@ -155,3 +156,32 @@ def does_student_exist(student_id):
         return False
     else:
         return True
+    
+def export_students_to_csv():
+    students = get_all_students()
+    if len(students) == 0:
+        return False
+    with open("students.csv","w",newline="") as file:
+        writer = csv.writer(file)
+
+        writer.writerow([
+            "Student ID",
+            "First Name",
+            "Last Name",
+            "Major",
+            "Year",
+            "GPA",
+            "Email"
+        ])
+
+        for student in students:
+            writer.writerow([
+                student.student_id,
+                student.first_name,
+                student.last_name,
+                student.major,
+                student.year,
+                student.gpa,
+                student.email
+])
+    return True
