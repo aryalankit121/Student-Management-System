@@ -1,5 +1,6 @@
 from student import Student
 import database
+import re
 
 def print_menu():
     print()
@@ -20,12 +21,35 @@ def get_valid_integer(prompt_text, error_message):
         except ValueError:
             print(f"\033[91m{error_message}\033[0m\n")
 
-def get_valid_float(prompt_text, error_message):
+def get_valid_float(prompt_text, error_message, min_value=None, max_value=None):
     while True:
         try:
-            return float(input(prompt_text))
+            value = float(input(prompt_text))
+
+            if min_value is not None and value < min_value:
+                print(f"\033[91mValue must be at least {min_value}.\033[0m\n")
+                continue
+
+            if max_value is not None and value > max_value:
+                print(f"\033[91mValue must be at most {max_value}.\033[0m\n")
+                continue
+
+            return value
+
         except ValueError:
             print(f"\033[91m{error_message}\033[0m\n")
+
+def get_valid_email(prompt_text, error_message):
+    while True:
+        email = input(prompt_text).strip()
+
+        pattern = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+
+        if re.fullmatch(pattern, email):
+            return email
+        
+        print(f"\033[91m{error_message}\033[0m\n")
+            
 
 def start():
     print("---------Welcome to the Student-Management-System---------")
@@ -58,10 +82,17 @@ def start():
             first_name = input("Enter the First name: ")
             last_name = input("Enter the Last name: ")
             major = input("Enter the Major: ")
-            
             year = get_valid_integer("Enter the Year of Graduation: ", "Error: Year must be a number.")
-            gpa = get_valid_float("Enter the GPA: ", "Error: GPA must be a number with decimals.")
-            email = input("Enter the email address: ")
+            gpa = get_valid_float(
+                "Enter the GPA: ",
+                "Error: GPA must be a number with decimals.",
+                min_value=0.0,
+                max_value=4.0
+            )
+            email = get_valid_email(
+                "Enter the email address: ",
+                "Invalid email format!"
+            )
             
             student = Student(first_name, last_name, student_id, major, year, gpa, email)
             database.add_student(student)
@@ -128,7 +159,6 @@ def start():
                 print("5. GPA")
                 print("6. Email")
                 
-                # FIX 1: Secure the menu choice
                 update_choice = get_valid_integer(
                     "Choose the number (1-6) that aligns with your interest: ",
                     "Invalid choice! Please enter a number (1-6)."
@@ -147,17 +177,23 @@ def start():
                     database.update_student_field(student_id, "major", new_major)
                 
                 elif update_choice == 4:
-                    # FIX 2: Secure the year input
                     new_year = get_valid_integer("What is the updated Year: ", "Error: Year must be a number.")
                     database.update_student_field(student_id, "year", new_year)
 
                 elif update_choice == 5:
-                    # FIX 3: Secure the GPA input
-                    new_gpa = get_valid_float("What is the updated GPA: ", "Error: GPA must be a number with decimals.")
+                    new_gpa = get_valid_float(
+                        "Enter the updated GPA: ",
+                        "Error: GPA must be a number with decimals.",
+                        min_value=0.0,
+                        max_value=4.0
+                    )
                     database.update_student_field(student_id, "gpa", new_gpa)
     
                 elif update_choice == 6:
-                    new_email = input("What is the updated Email: ")
+                    new_email = get_valid_email(
+                        "Enter the updated email: ",
+                        "Invalid email format!"
+                    )
                     database.update_student_field(student_id, "email", new_email)
                 
                 else:
