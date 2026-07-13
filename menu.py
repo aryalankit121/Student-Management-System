@@ -9,7 +9,8 @@ def print_menu():
     print("4. Update a Student's data")
     print("5. Delete a Student")
     print("6. Export Students to CSV")
-    print("7. Exit ")
+    print("7. View Students sorted based on GPA")
+    print("8. Exit ")
     print()
 
 def get_valid_integer(prompt_text, error_message):
@@ -37,7 +38,7 @@ def start():
         print_menu()
 
         choice = get_valid_integer(
-            "Enter a number (1-7) that aligns with your choice: ",
+            "Enter a number (1-8) that aligns with your choice: ",
             "Invalid choice! Please enter a number."
         )
 
@@ -201,6 +202,31 @@ def start():
                 print("\033[93m\nNo students in the database to export.\033[0m")
 
         elif choice == 7:
+            print("\nHow do you want the students to be sorted: ")
+            print("1. From Highest to Lowest (Descending)")
+            print("2. From Lowest to Highest (Ascending)")
+
+            sort_choice = get_valid_integer(
+            "Choose an option (1-2): ",
+            "Invalid choice! Please enter a number."
+            )
+        
+            if sort_choice == 1:
+                students = database.get_students_sorted_by_gpa(descending = True)
+            elif sort_choice == 2:
+                students = database.get_students_sorted_by_gpa(descending = False)
+            else:
+                print("\033[91m\nInvalid choice! Returning to menu...\033[0m")
+                continue
+            
+            if len(students) == 0:
+                print("\033[93m\nNo students in the database.\033[0m")
+            else:
+                print(f"\033[92m\nShowing {len(students)} student(s) sorted by GPA:\033[0m")
+                for student in students:
+                    student.display()
+
+        elif choice == 8:
             quit_confirmation = input("\033[91m\nAre you sure you want to quit? Press 1 if you want to quit; Press any other key to continue: \033[0m")
             
             if(quit_confirmation == '1'):
@@ -210,6 +236,6 @@ def start():
                 continue
         
         else:
-            print("\033[91mInvalid choice! Please choose a number (1-7) from menu...\033[0m")
+            print("\033[91mInvalid choice! Please choose a number (1-8) from menu...\033[0m")
             
 

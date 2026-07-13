@@ -151,6 +151,36 @@ def delete_student(student_id):
     connection.commit()
     connection.close()
 
+def get_students_sorted_by_gpa(descending = True):
+    connection = sqlite3.connect("students.db")
+
+    cursor = connection.cursor()
+
+    if descending:
+        query = "SELECT * FROM students ORDER BY gpa DESC"
+    else:
+        query = "SELECT * FROM students ORDER BY gpa ASC"
+    
+    cursor.execute(query)
+    rows = cursor.fetchall()
+    connection.close()
+
+    sorted_students = []
+
+    for row in rows:
+        student = Student(
+            row[1],
+            row[2],
+            row[0],
+            row[3],
+            row[4],
+            row[5],
+            row[6]
+        )
+        sorted_students.append(student)
+    
+    return sorted_students
+
 def does_student_exist(student_id):
     if (get_student_by_id(student_id) is None):
         return False
@@ -185,3 +215,4 @@ def export_students_to_csv():
                 student.email
 ])
     return True
+
