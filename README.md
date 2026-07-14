@@ -1,8 +1,8 @@
 # Student Management System
 
-A modular command-line **Student Management System** built with **Python** and **SQLite** that demonstrates object-oriented programming, database design, SQL operations, and clean software architecture.
+A modular command-line **Student Management System** built with **Python** and **SQLite** that demonstrates object-oriented programming, relational database design, SQL operations, automated testing, and clean software architecture.
 
-This project was developed as a backend learning project to strengthen my understanding of databases, CRUD operations, input validation, exception handling, and modular application design.
+This project was developed as a backend learning project to strengthen my understanding of databases, CRUD operations, input validation, exception handling, software testing, and modular application design.
 
 ---
 
@@ -32,6 +32,7 @@ This project was developed as a backend learning project to strengthen my unders
 - Interactive command-line interface
 - Object-oriented design using a `Student` class
 - Modular project architecture with reusable utility functions
+- Comprehensive automated unit tests using **pytest**
 
 ---
 
@@ -40,6 +41,7 @@ This project was developed as a backend learning project to strengthen my unders
 - Python 3
 - SQLite3
 - SQL
+- Pytest
 - Regular Expressions (`re`)
 - CSV (`csv`)
 - Git
@@ -52,14 +54,17 @@ This project was developed as a backend learning project to strengthen my unders
 ```text
 Student-Management-System/
 │
-├── main.py          # Program entry point
-├── menu.py          # Command-line user interface
-├── database.py      # Database operations and SQL queries
-├── student.py       # Student class
-├── utils.py         # Helper validation functions
-├── students.db      # SQLite database (generated at runtime)
-├── students.csv     # Exported student records (generated on demand)
-└── README.md
+├── main.py               # Program entry point
+├── menu.py               # Command-line user interface
+├── database.py           # Database operations and SQL queries
+├── student.py            # Student class
+├── utils.py              # Validation helper functions
+├── tests/
+│   └── test_database.py  # Automated pytest test suite
+├── students.db           # SQLite database (generated at runtime)
+├── students.csv          # Exported student records (generated on demand)
+├── README.md
+└── LICENSE
 ```
 
 ---
@@ -76,11 +81,19 @@ Student-Management-System/
 - ✅ Implemented student search by Student ID and Name
 - ✅ Built an interactive command-line interface
 - ✅ Converted SQL records into Python `Student` objects
-- ✅ Organized the project into separate modules
+- ✅ Organized the project into modular components
 - ✅ Added robust input validation and exception handling
 - ✅ Implemented GPA sorting using SQL `ORDER BY`
 - ✅ Built a Database Statistics Dashboard
 - ✅ Added CSV export functionality with file error handling
+- ✅ Implemented automated unit testing using **pytest**
+  - CRUD operations
+  - Student lookup
+  - GPA sorting
+  - Database statistics
+  - Duplicate ID handling
+  - CSV export
+  - Isolated test database with automatic cleanup
 
 ---
 
@@ -98,13 +111,43 @@ git clone https://github.com/aryalankit121/Student-Management-System.git
 cd Student-Management-System
 ```
 
-### 3. Run the application
+### 3. Install dependencies
+
+```bash
+pip install pytest
+```
+
+### 4. Run the application
 
 ```bash
 python main.py
 ```
 
 The SQLite database will automatically be created the first time the application is run if it does not already exist.
+
+---
+
+## Running the Test Suite
+
+Execute the automated tests with:
+
+```bash
+pytest -v
+```
+
+Current test coverage includes:
+
+- Student creation
+- Student retrieval
+- Student updates
+- Student deletion
+- Duplicate ID protection
+- Search by name
+- Retrieve all students
+- GPA sorting
+- Database statistics
+- CSV export
+- Empty database export handling
 
 ---
 
@@ -121,6 +164,7 @@ This project helped me gain practical experience with:
 - Regular Expressions (Regex)
 - CSV file handling
 - Exception handling
+- Automated testing with pytest
 - Git version control
 - GitHub workflow
 
@@ -128,7 +172,6 @@ This project helped me gain practical experience with:
 
 ## Planned Improvements
 
-- Unit testing with `pytest`
 - Advanced search filters
   - Major
   - Graduation Year
@@ -149,7 +192,13 @@ Screenshots and demonstrations of the application will be added as development p
 
 **Ankit Aryal**
 
-Computer Science Student  
+Computer Science Student
 Catawba College
 
-GitHub: **https://github.com/aryalankit121**
+GitHub: https://github.com/aryalankit121
+
+---
+
+## License
+
+This project is licensed under the MIT License. See the **LICENSE** file for details.
