@@ -2,6 +2,7 @@ import os
 import pytest
 import database
 import sqlite3
+import csv
 
 from student import Student
 
@@ -17,6 +18,9 @@ def test_db():
         database.DB_NAME = original_db
         if os.path.exists("test_students.db"):
             os.remove("test_students.db")
+        
+        if os.path.exists("students.csv"):
+            os.remove("students.csv")
 
 def test_add_and_retrieve_student(test_db):
     """
@@ -64,7 +68,7 @@ def test_update_student(test_db):
     )
 
     database.add_student(sample_student)
-    database.update_student_field(12345,"gpa",3.8)
+    database.update_student_field(12345, "gpa", 3.8)
     retrieved = database.get_student_by_id(12345)
 
     assert retrieved is not None
@@ -140,19 +144,19 @@ def test_does_student_exist(test_db):
     whether a student record exists in the database.
     """
     sample_student = Student(
-    first_name="Ankit",
-    last_name="Aryal",
-    student_id=12345,
-    major="Computer Science",
-    year=2026,
-    gpa=4.0,
-    email="ankit1@example.com"
+        first_name="Ankit",
+        last_name="Aryal",
+        student_id=12345,
+        major="Computer Science",
+        year=2026,
+        gpa=4.0,
+        email="ankit1@example.com"
     )
 
     database.add_student(sample_student)
 
-    exists  = database.does_student_exist(12345)
-    does_not_exist  = database.does_student_exist(12346)
+    exists = database.does_student_exist(12345)
+    does_not_exist = database.does_student_exist(12346)
 
     assert exists  is True
     assert does_not_exist  is False
@@ -231,19 +235,21 @@ def test_get_students_sorted_by_gpa(test_db):
     database.add_student(sample_student_1)
     database.add_student(sample_student_2)
 
-    descending_students  = database.get_students_sorted_by_gpa()
+    descending_students = database.get_students_sorted_by_gpa()
 
-    assert descending_students [0].student_id == 12345
-    assert descending_students [0].gpa == 4.0
-    assert descending_students [1].student_id == 12346
-    assert descending_students [1].gpa == 3.9
+    assert len(descending_students) == 2
+    assert descending_students[0].student_id == 12345
+    assert descending_students[0].gpa == 4.0
+    assert descending_students[1].student_id == 12346
+    assert descending_students[1].gpa == 3.9
 
-    ascending_students  = database.get_students_sorted_by_gpa(descending = False)
-
-    assert ascending_students [0].student_id == 12346
-    assert ascending_students [0].gpa == 3.9
-    assert ascending_students [1].student_id == 12345
-    assert ascending_students [1].gpa == 4.0
+    ascending_students = database.get_students_sorted_by_gpa(descending=False)
+    
+    assert len(ascending_students) == 2
+    assert ascending_students[0].student_id == 12346
+    assert ascending_students[0].gpa == 3.9
+    assert ascending_students[1].student_id == 12345
+    assert ascending_students[1].gpa == 4.0
 
 def test_get_database_statistics(test_db):
     """
@@ -287,12 +293,6 @@ def test_get_database_statistics(test_db):
     assert major_counts_dict["Computer Engineering"] == 1
 
 
-    
-
-
-    
-    
-
 def test_prevent_duplicate_student_id(test_db):
     """
     Verifies that trying to add two students with the same ID
@@ -325,4 +325,81 @@ def test_prevent_duplicate_student_id(test_db):
     # Assert: Try to add the second student and make sure it raises an IntegrityError
     with pytest.raises(sqlite3.IntegrityError):
         database.add_student(student_2)
+
+def test_export_empty_database(test_db):
+    """
+    Verifies that exporting an empty database returns False.
+    """
+    success = database.export_students_to_csv()
+
+    assert success is False
+    assert not os.path.exists("students.csv")
+
+def test_export_students_to_csv(test_db):
+    """
+    Verifies that student records are correctly exported
+    to a CSV file with the expected header and contents.
+    """
+    sample_student_1 = Student(
+        first_name="Ankit",
+        last_name="Aryal",
+        student_id=12345,
+        major="Computer Science",
+        year=2026,
+        gpa=4.0,
+        email="ankit1@example.com"
+    )
+
+    sample_student_2 = Student(
+        first_name="Rajiv",
+        last_name="Sharma",
+        student_id=12346,
+        major="Computer Engineering",
+        year=2027,
+        gpa=3.9,
+        email="ankit2@example.com"
+    )
+    database.add_student(sample_student_1)
+    database.add_student(sample_student_2)
+
+    success = database.export_students_to_csv()
+    assert success is True
+    assert os.path.exists("students.csv")
+
+    with open("students.csv","r",newline="") as file:
+        reader = csv.reader(file)
+
+        rows = list(reader)
+
+        assert len(rows) == 3
+
+        assert rows[0] == [
+            "Student ID",
+            "First Name",
+            "Last Name",
+            "Major",
+            "Year",
+            "GPA",
+            "Email"
+        ]
+
+        assert rows[1] == [
+            "12345",
+            "Ankit",
+            "Aryal",
+            "Computer Science",
+            "2026",
+            "4.0",
+            "ankit1@example.com"
+        ]
+
+        assert rows[2] == [
+            "12346",
+            "Rajiv",
+            "Sharma",
+            "Computer Engineering",
+            "2027",
+            "3.9",
+            "ankit2@example.com"
+        ]
 
