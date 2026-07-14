@@ -2,8 +2,10 @@ import sqlite3
 from student import Student
 import csv
 
+DB_NAME = "students.db"
+
 def setup_database():
-    connection = sqlite3.connect("students.db")
+    connection = sqlite3.connect(DB_NAME)
 
     cursor = connection.cursor()
 
@@ -22,7 +24,7 @@ def setup_database():
     connection.close()
 
 def add_student(student):
-    connection = sqlite3.connect("students.db")
+    connection = sqlite3.connect(DB_NAME)
 
     try:
         cursor = connection.cursor()
@@ -46,7 +48,7 @@ def add_student(student):
         connection.close()
 
 def get_all_students():
-    connection = sqlite3.connect("students.db")
+    connection = sqlite3.connect(DB_NAME)
 
     cursor = connection.cursor()
 
@@ -76,7 +78,7 @@ def get_all_students():
 
 
 def get_student_by_id(student_id):
-    connection = sqlite3.connect("students.db")
+    connection = sqlite3.connect(DB_NAME)
 
     cursor = connection.cursor()
 
@@ -101,7 +103,7 @@ def get_student_by_id(student_id):
     return student
 
 def get_students_by_name(search_term):
-    connection = sqlite3.connect("students.db")
+    connection = sqlite3.connect(DB_NAME)
     cursor = connection.cursor()
 
     query = "SELECT * FROM students WHERE first_name LIKE ? OR last_name LIKE ?"
@@ -128,7 +130,7 @@ def get_students_by_name(search_term):
     return found_students
 
 def update_student_field(student_id, column_name, new_value):
-    connection = sqlite3.connect("students.db")
+    connection = sqlite3.connect(DB_NAME)
     cursor = connection.cursor()
 
     # We use an f-string for the column_name, but we still use '?' for the value to keep it safe!
@@ -140,7 +142,7 @@ def update_student_field(student_id, column_name, new_value):
     connection.close()
     
 def delete_student(student_id):
-    connection = sqlite3.connect("students.db")
+    connection = sqlite3.connect(DB_NAME)
 
     cursor = connection.cursor()
 
@@ -152,7 +154,7 @@ def delete_student(student_id):
     connection.close()
 
 def get_database_statistics():
-    connection = sqlite3.connect("students.db")
+    connection = sqlite3.connect(DB_NAME)
 
     cursor = connection.cursor()
 
@@ -190,7 +192,7 @@ def get_database_statistics():
     }
 
 def get_students_sorted_by_gpa(descending = True):
-    connection = sqlite3.connect("students.db")
+    connection = sqlite3.connect(DB_NAME)
 
     cursor = connection.cursor()
 
