@@ -28,6 +28,13 @@ def get_student_by_student_id(student_id):
 
     return student.to_dict()
 
+@app.route("/students/<int:student_id>", methods=["PUT"])
+def update_student_by_student_id(student_id):
+    data = request.json
+
+    if not database.does_student_exist(student_id):
+        return {"error": "Student not found"},404
+
 @app.route("/students", methods=["POST"])
 def post_student():
     data = request.json
