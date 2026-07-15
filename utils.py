@@ -17,6 +17,23 @@ def is_valid_gpa(gpa):
         return True
     return False
 
+def is_valid_year(year):
+    try:
+        year = int(year)
+    except(ValueError,TypeError):
+        return False
+    
+    return 1900 <= year <= 2100
+
+def is_valid_name(name):
+    if not isinstance(name,str):
+        return False
+    
+    name = name.strip()
+
+    return len(name) > 0
+
+
 def is_valid_email(email):
     pattern = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
 

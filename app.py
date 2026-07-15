@@ -6,6 +6,15 @@ import utils
 
 app = Flask(__name__)
 
+ALLOWED_FIELDS = {
+    "first_name",
+    "last_name",
+    "major",
+    "year",
+    "gpa",
+    "email"
+}
+
 @app.route("/")
 def home():
     return {
@@ -28,12 +37,64 @@ def get_student_by_student_id(student_id):
 
     return student.to_dict()
 
+@app.route("/students/<int:student_id>", methods=["DELETE"])
+def delete_student_by_student_id(student_id):
+
+    if not database.does_student_exist(student_id):
+        return {"error": "Student not found"},404
+    
+    student = database.get_student_by_id(student_id)
+    
+    database.delete_student(student_id)
+
+    return{
+        "message": "Student successfully deleted",
+        "student": student.to_dict()
+        }, 200
+
 @app.route("/students/<int:student_id>", methods=["PUT"])
 def update_student_by_student_id(student_id):
     data = request.json
 
+    if not data:
+        return {"error": "Malformed or missing JSON payload"}, 400
+
     if not database.does_student_exist(student_id):
         return {"error": "Student not found"},404
+    
+    for column_name, new_value in data.items():
+        if column_name not in ALLOWED_FIELDS:
+            return {"error": f"Invalid field: {column_name}"}, 400
+        
+        if column_name == "first_name":
+            if not utils.is_valid_name(new_value):
+                return {"error": "Invalid First Name"}, 400
+            
+        if column_name == "last_name":
+            if not utils.is_valid_name(new_value):
+                return {"error": "Invalid Last Name"}, 400
+
+        if column_name == "year":
+            if not utils.is_valid_year(new_value):
+                return {"error": "Invalid Year"}, 400
+
+        if column_name == "gpa":
+            if not utils.is_valid_gpa(new_value):
+                return {"error": "Invalid GPA"}, 400
+
+        if column_name == "email":
+            if not utils.is_valid_email(new_value):
+                return {"error": "Invalid email format"}, 400
+
+        database.update_student_field(student_id, column_name, new_value)
+    
+    updated_student = database.get_student_by_id(student_id)
+
+    return {
+        "message": "Student updated successfully",
+        "student": updated_student.to_dict()
+    },200
+
 
 @app.route("/students", methods=["POST"])
 def post_student():
@@ -53,6 +114,21 @@ def post_student():
                 "error": "Invalid email format"
             },400
 
+        if not utils.is_valid_name(data["first_name"]):
+            return {
+                "error": "Invalid First Name"
+                }, 400
+        
+        if not utils.is_valid_name(data["last_name"]):
+            return {
+                "error": "Invalid Last Name"
+                }, 400
+    
+        if not utils.is_valid_year(data["year"]):
+            return {
+                "error": "Invalid Year"
+                }, 400
+
         student = Student(
             first_name=data["first_name"],
             last_name=data["last_name"],
@@ -66,16 +142,17 @@ def post_student():
         database.add_student(student)
         
         return {
-            "message": "Student added successfully"
+            "message": "Student added successfully",
+            "student": student.to_dict()
         }, 201
         
     except KeyError as e:
-        return{
+        return {
             "error": f"Missing required field: {e.args[0]}"
-        },400
+        }, 400
     
     except sqlite3.IntegrityError:
-        return{
+        return {
             "error": "Student ID already exists."
         }, 409
 
