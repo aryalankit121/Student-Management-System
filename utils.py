@@ -7,6 +7,23 @@ def get_valid_integer(prompt_text, error_message):
         except ValueError:
             print(f"\033[91m{error_message}\033[0m\n")
 
+def is_valid_gpa(gpa):
+    try:
+        gpa = float(gpa)
+    except(ValueError,TypeError):
+        return False
+    
+    if 0.0<= gpa <= 4.0:
+        return True
+    return False
+
+def is_valid_email(email):
+    pattern = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+
+    if re.fullmatch(pattern, email):
+        return True
+    return False
+
 def get_valid_float(prompt_text, error_message, min_value=None, max_value=None):
     while True:
         try:
@@ -29,9 +46,7 @@ def get_valid_email(prompt_text, error_message):
     while True:
         email = input(prompt_text).strip()
 
-        pattern = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
-
-        if re.fullmatch(pattern, email):
+        if (is_valid_email(email)):
             return email
         
         print(f"\033[91m{error_message}\033[0m\n")

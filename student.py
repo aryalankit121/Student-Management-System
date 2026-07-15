@@ -7,6 +7,7 @@ class Student:
         self.year = year
         self.gpa = gpa
         self.email = email
+
     def display(self):
         print("----------------------------------")
         print(f"Student ID: {self.student_id}")
@@ -16,3 +17,15 @@ class Student:
         print(f"GPA       : {self.gpa}")
         print(f"Email     : {self.email}")
         print("----------------------------------")
+
+    def to_dict(self):
+        """Converts object instances into JSON-serializable dictionaries."""
+        return {
+            "student_id": self.student_id,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "major": self.major,
+            "year": self.year,
+            "gpa": self.gpa,
+            "email": self.email
+        }
