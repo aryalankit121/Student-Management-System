@@ -1,51 +1,74 @@
 # Student Management System
 
-A modular command-line **Student Management System** built with **Python** and **SQLite** that demonstrates object-oriented programming, relational database design, SQL operations, automated testing, and clean software architecture.
+A modular **Student Management System** built with **Python**, **SQLite**, and **Flask** that demonstrates object-oriented programming, relational database design, REST API development, SQL operations, automated testing, and clean software architecture.
 
-This project was developed as a backend learning project to strengthen my understanding of databases, CRUD operations, input validation, exception handling, software testing, and modular application design.
+This project was developed as a backend learning project to strengthen my understanding of databases, CRUD operations, input validation, exception handling, software testing, API development, and modular application design.
 
 ---
 
 ## Features
 
-- Add new students to a SQLite database
-- View all students
-- Search students by **Student ID** or **Name**
-- Update any student field through a dynamic SQL update system
-- Delete students with confirmation prompts
-- View students sorted by GPA using SQL `ORDER BY`
-  - Ascending
-  - Descending
-- View a **Database Statistics Dashboard**, including:
-  - Total students
-  - Total unique majors
-  - Average GPA
-  - Highest GPA
-  - Lowest GPA
-  - Student distribution by major
-- Export all student records to a CSV file
-- Robust input validation:
-  - Email validation using Regular Expressions (Regex)
-  - GPA range validation (0.0–4.0)
-  - Numeric type checking
-- Prevent duplicate Student IDs
-- Interactive command-line interface
-- Object-oriented design using a `Student` class
-- Modular project architecture with reusable utility functions
-- Comprehensive automated unit tests using **pytest**
+### Command-Line Application
+
+* Add new students to a SQLite database
+* View all students
+* Search students by **Student ID** or **Name**
+* Update any student field through a dynamic SQL update system
+* Delete students with confirmation prompts
+* View students sorted by GPA using SQL `ORDER BY`
+
+  * Ascending
+  * Descending
+* View a **Database Statistics Dashboard**, including:
+
+  * Total students
+  * Total unique majors
+  * Average GPA
+  * Highest GPA
+  * Lowest GPA
+  * Student distribution by major
+* Export all student records to a CSV file
+
+### REST API
+
+* Retrieve all students
+* Retrieve a student by Student ID
+* Create new students
+* Update existing student records
+* Delete student records
+* JSON request and response handling
+* Proper HTTP status codes
+* Robust request validation
+* Duplicate Student ID protection
+
+### Validation & Software Design
+
+* Email validation using Regular Expressions (Regex)
+* GPA validation (0.0–4.0)
+* Graduation year validation
+* Student name validation
+* Prevent duplicate Student IDs
+* Object-oriented design using a `Student` class
+* Modular project architecture with reusable utility functions
+
+### Testing
+
+* Comprehensive automated unit tests using **pytest**
+* Manual REST API testing using **Thunder Client**
 
 ---
 
 ## Technologies Used
 
-- Python 3
-- SQLite3
-- SQL
-- Pytest
-- Regular Expressions (`re`)
-- CSV (`csv`)
-- Git
-- GitHub
+* Python 3
+* Flask
+* SQLite3
+* SQL
+* Pytest
+* Regular Expressions (`re`)
+* CSV (`csv`)
+* Git
+* GitHub
 
 ---
 
@@ -54,46 +77,88 @@ This project was developed as a backend learning project to strengthen my unders
 ```text
 Student-Management-System/
 │
-├── main.py               # Program entry point
-├── menu.py               # Command-line user interface
-├── database.py           # Database operations and SQL queries
-├── student.py            # Student class
-├── utils.py              # Validation helper functions
+├── app.py                  # Flask REST API
+├── main.py                 # Command-line application
+├── menu.py                 # Command-line user interface
+├── database.py             # Database operations and SQL queries
+├── student.py              # Student class
+├── utils.py                # Validation helper functions
 ├── tests/
-│   └── test_database.py  # Automated pytest test suite
-├── students.db           # SQLite database (generated at runtime)
-├── students.csv          # Exported student records (generated on demand)
+│   └── test_database.py    # Automated pytest test suite
+├── students.db             # SQLite database (generated at runtime)
+├── students.csv            # Exported student records (generated on demand)
 ├── README.md
 └── LICENSE
 ```
 
 ---
 
+## REST API Endpoints
+
+| Method | Endpoint                 | Description                |
+| ------ | ------------------------ | -------------------------- |
+| GET    | `/`                      | API status                 |
+| GET    | `/students`              | Retrieve all students      |
+| GET    | `/students/<student_id>` | Retrieve a student by ID   |
+| POST   | `/students`              | Create a new student       |
+| PUT    | `/students/<student_id>` | Update an existing student |
+| DELETE | `/students/<student_id>` | Delete a student           |
+
+---
+
+## Project Evolution
+
+* ✅ Command-line Student Management System
+* ✅ SQLite database integration
+* ✅ Complete CRUD functionality
+* ✅ Database Statistics Dashboard
+* ✅ CSV export
+* ✅ Modular architecture
+* ✅ Automated testing with **pytest**
+* ✅ Flask REST API
+* ⬜ Automated API testing
+* ⬜ Authentication/Login system
+* ⬜ Web frontend
+
+---
+
 ## Current Progress
 
-- ✅ Designed the `Student` class using Object-Oriented Programming
-- ✅ Designed a relational SQLite database for persistent storage
-- ✅ Implemented complete CRUD functionality
-  - Create student records
-  - Read student records
-  - Update student information
-  - Delete student records
-- ✅ Implemented student search by Student ID and Name
-- ✅ Built an interactive command-line interface
-- ✅ Converted SQL records into Python `Student` objects
-- ✅ Organized the project into modular components
-- ✅ Added robust input validation and exception handling
-- ✅ Implemented GPA sorting using SQL `ORDER BY`
-- ✅ Built a Database Statistics Dashboard
-- ✅ Added CSV export functionality with file error handling
-- ✅ Implemented automated unit testing using **pytest**
-  - CRUD operations
-  - Student lookup
-  - GPA sorting
-  - Database statistics
-  - Duplicate ID handling
-  - CSV export
-  - Isolated test database with automatic cleanup
+* ✅ Designed the `Student` class using Object-Oriented Programming
+* ✅ Designed a relational SQLite database for persistent storage
+* ✅ Implemented complete CRUD functionality
+
+  * Create student records
+  * Read student records
+  * Update student information
+  * Delete student records
+* ✅ Implemented student search by Student ID and Name
+* ✅ Built an interactive command-line interface
+* ✅ Converted SQL records into Python `Student` objects
+* ✅ Organized the project into modular components
+* ✅ Added robust input validation and exception handling
+* ✅ Implemented GPA sorting using SQL `ORDER BY`
+* ✅ Built a Database Statistics Dashboard
+* ✅ Added CSV export functionality with file error handling
+* ✅ Implemented automated unit testing using **pytest**
+
+  * CRUD operations
+  * Student lookup
+  * GPA sorting
+  * Database statistics
+  * Duplicate ID handling
+  * CSV export
+  * Isolated test database with automatic cleanup
+* ✅ Developed a REST API using **Flask**
+
+  * GET endpoints
+  * POST endpoint
+  * PUT endpoint
+  * DELETE endpoint
+  * JSON request and response handling
+  * Proper HTTP status codes
+  * Request validation
+* ✅ Manually tested all REST API endpoints using **Thunder Client**
 
 ---
 
@@ -114,13 +179,23 @@ cd Student-Management-System
 ### 3. Install dependencies
 
 ```bash
-pip install pytest
+pip install flask pytest
 ```
 
-### 4. Run the application
+---
+
+### Run the Command-Line Application
 
 ```bash
 python main.py
+```
+
+---
+
+### Run the Flask REST API
+
+```bash
+python app.py
 ```
 
 The SQLite database will automatically be created the first time the application is run if it does not already exist.
@@ -129,7 +204,7 @@ The SQLite database will automatically be created the first time the application
 
 ## Running the Test Suite
 
-Execute the automated tests with:
+Execute the automated database tests with:
 
 ```bash
 pytest -v
@@ -137,17 +212,17 @@ pytest -v
 
 Current test coverage includes:
 
-- Student creation
-- Student retrieval
-- Student updates
-- Student deletion
-- Duplicate ID protection
-- Search by name
-- Retrieve all students
-- GPA sorting
-- Database statistics
-- CSV export
-- Empty database export handling
+* Student creation
+* Student retrieval
+* Student updates
+* Student deletion
+* Duplicate ID protection
+* Search by name
+* Retrieve all students
+* GPA sorting
+* Database statistics
+* CSV export
+* Empty database export handling
 
 ---
 
@@ -155,36 +230,42 @@ Current test coverage includes:
 
 This project helped me gain practical experience with:
 
-- Object-Oriented Programming (OOP)
-- SQL and relational databases
-- SQLite integration with Python
-- CRUD application development
-- Modular software architecture
-- Input validation
-- Regular Expressions (Regex)
-- CSV file handling
-- Exception handling
-- Automated testing with pytest
-- Git version control
-- GitHub workflow
+* Object-Oriented Programming (OOP)
+* SQL and relational databases
+* SQLite integration with Python
+* CRUD application development
+* REST API development
+* Flask
+* JSON serialization
+* HTTP request handling
+* Modular software architecture
+* Input validation
+* Regular Expressions (Regex)
+* CSV file handling
+* Exception handling
+* Automated testing with **pytest**
+* Manual API testing using **Thunder Client**
+* Git version control
+* GitHub workflow
 
 ---
 
 ## Planned Improvements
 
-- Advanced search filters
-  - Major
-  - Graduation Year
-  - GPA range
-- REST API using Flask
-- Authentication/Login system
-- Web interface
+* Automated API testing with **pytest**
+* Authentication/Login system
+* Web frontend using HTML/CSS/JavaScript or React
+* Advanced search filters
+
+  * Major
+  * Graduation Year
+  * GPA range
 
 ---
 
 ## Screenshots
 
-Screenshots and demonstrations of the application will be added as development progresses.
+Screenshots and demonstrations of both the command-line application and the REST API will be added as development progresses.
 
 ---
 
