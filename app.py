@@ -93,8 +93,74 @@ def update_student_by_student_id(student_id):
     return {
         "message": "Student updated successfully",
         "student": updated_student.to_dict()
-    },200
+    }, 200
 
+@app.route("/students/statistics")
+def get_students_statistics():
+    statistics = database.get_database_statistics()
+
+    if statistics is None:
+        return{
+            "error": "No Students in the database"
+        }, 404
+    
+    return{
+        "message": "Student statistics successfully loaded",
+        "statistics": statistics
+    }, 200
+
+@app.route("/students/sorted")
+def get_students_in_order():
+    order = request.args.get("order")
+    if order == "asc":
+        students = database.get_students_sorted_by_gpa(descending=False)
+        return [student.to_dict() for student in students]
+    elif order == "desc":
+        students = database.get_students_sorted_by_gpa(descending=True)
+        return [student.to_dict() for student in students]
+    else:
+        return {
+            "error": "Invalid order. Use 'asc' or 'desc'."
+        },400
+    
+@app.route("/students/search")
+def get_students_by_name():
+    name = request.args.get("name")
+    if not utils.is_valid_name(name):
+        return{
+            "error": "Invalid Name format"
+        }, 400
+    students = database.get_students_by_name(name)
+    if not students:
+        return{
+            "error": "No students found"
+        }, 404
+
+    return [student.to_dict() for student in students]
+    
+@app.route("/students/export")
+def export_to_csv():
+    try:
+        success = database.export_students_to_csv()
+
+        if not success:
+            return {
+                "error": "No students available to export."
+            }, 400
+
+        return {
+            "message": "Students successfully exported to CSV."
+        }, 200
+
+    except PermissionError:
+        return {
+            "error": "Permission denied. Please close 'students.csv' if it is open and try again."
+        }, 500
+
+    except OSError as e:
+        return {
+            "error": f"File system error: {e}"
+        }, 500
 
 @app.route("/students", methods=["POST"])
 def post_student():

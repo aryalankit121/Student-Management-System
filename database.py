@@ -133,7 +133,6 @@ def update_student_field(student_id, column_name, new_value):
     connection = sqlite3.connect(DB_NAME)
     cursor = connection.cursor()
 
-    # We use an f-string for the column_name, but we still use '?' for the value to keep it safe!
     query = f"UPDATE students SET {column_name} = ? WHERE student_id = ?"
     
     cursor.execute(query, (new_value, student_id))
@@ -175,7 +174,10 @@ def get_database_statistics():
     min_gpa = round(cursor.fetchone()[0],2)
 
     cursor.execute("SELECT major, COUNT(*) FROM students GROUP BY major ORDER BY COUNT(*) DESC")
-    major_counts = cursor.fetchall()
+    major_counts = [
+        {"major": major, "count": count}
+        for major, count in cursor.fetchall()
+    ]
 
     cursor.execute("SELECT COUNT(DISTINCT major) FROM students")
     total_majors = cursor.fetchone()[0]
