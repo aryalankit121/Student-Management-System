@@ -26,13 +26,15 @@ def is_valid_year(year):
     return 1900 <= year <= 2100
 
 def is_valid_name(name):
-    if not isinstance(name,str):
+    if not isinstance(name, str):
         return False
-    
+
     name = name.strip()
 
-    return len(name) > 0
+    if len(name) == 0:
+        return False
 
+    return name.replace(" ", "").isalpha()
 
 def is_valid_email(email):
     pattern = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"

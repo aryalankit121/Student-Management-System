@@ -6,22 +6,6 @@ import csv
 
 from student import Student
 
-@pytest.fixture
-def test_db():
-    original_db = database.DB_NAME
-    database.DB_NAME = "test_students.db"
-    database.setup_database()
-
-    try:
-        yield
-    finally:
-        database.DB_NAME = original_db
-        if os.path.exists("test_students.db"):
-            os.remove("test_students.db")
-        
-        if os.path.exists("students.csv"):
-            os.remove("students.csv")
-
 def test_add_and_retrieve_student(test_db):
     """
     Verifies that a student can be successfully written to the database
@@ -286,8 +270,11 @@ def test_get_database_statistics(test_db):
     assert retrieved['min_gpa'] == 3.9
     assert retrieved['total_majors'] == 2
 
-    major_counts_dict = dict(retrieved['major_counts'])
-
+    major_counts_dict = {
+        item["major"]: item["count"]
+        for item in retrieved["major_counts"]
+    }
+    
     assert len(major_counts_dict) == 2
     assert major_counts_dict["Computer Science"] == 1
     assert major_counts_dict["Computer Engineering"] == 1
