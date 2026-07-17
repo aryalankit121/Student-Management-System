@@ -2,7 +2,7 @@
 
 A modular **Student Management System** built with **Python**, **SQLite**, and **Flask** that demonstrates object-oriented programming, relational database design, REST API development, SQL operations, automated testing, and clean software architecture.
 
-This project was developed as a backend learning project to strengthen my understanding of databases, CRUD operations, input validation, exception handling, software testing, API development, and modular application design.
+This project was developed as a backend learning project to strengthen my understanding of databases, CRUD operations, input validation, exception handling, software testing, API development, and modular software design.
 
 ---
 
@@ -33,6 +33,10 @@ This project was developed as a backend learning project to strengthen my unders
 
 * Retrieve all students
 * Retrieve a student by Student ID
+* Search students by name
+* Retrieve students sorted by GPA (ascending or descending)
+* Retrieve database statistics
+* Export student records to CSV
 * Create new students
 * Update existing student records
 * Delete student records
@@ -53,7 +57,7 @@ This project was developed as a backend learning project to strengthen my unders
 
 ### Testing
 
-* Comprehensive automated unit tests using **pytest**
+* Comprehensive automated database unit tests using **pytest**
 * Manual REST API testing using **Thunder Client**
 
 ---
@@ -84,9 +88,9 @@ Student-Management-System/
 ├── student.py              # Student class
 ├── utils.py                # Validation helper functions
 ├── tests/
-│   └── test_database.py    # Automated pytest test suite
+│   └── test_database.py    # Automated database test suite
 ├── students.db             # SQLite database (generated at runtime)
-├── students.csv            # Exported student records (generated on demand)
+├── students.csv            # Exported CSV file (generated on demand)
 ├── README.md
 └── LICENSE
 ```
@@ -95,14 +99,18 @@ Student-Management-System/
 
 ## REST API Endpoints
 
-| Method | Endpoint                 | Description                |
-| ------ | ------------------------ | -------------------------- |
-| GET    | `/`                      | API status                 |
-| GET    | `/students`              | Retrieve all students      |
-| GET    | `/students/<student_id>` | Retrieve a student by ID   |
-| POST   | `/students`              | Create a new student       |
-| PUT    | `/students/<student_id>` | Update an existing student |
-| DELETE | `/students/<student_id>` | Delete a student           |
+| Method | Endpoint                       | Description                           |
+| ------ | ------------------------------ | ------------------------------------- |
+| GET    | `/`                            | API status                            |
+| GET    | `/students`                    | Retrieve all students                 |
+| GET    | `/students/<student_id>`       | Retrieve a student by Student ID      |
+| GET    | `/students/search?name=<name>` | Search students by first or last name |
+| GET    | `/students/sorted?order=asc`   | Retrieve students sorted by GPA       |
+| GET    | `/students/statistics`         | Retrieve database statistics          |
+| GET    | `/students/export`             | Export all students to CSV            |
+| POST   | `/students`                    | Create a new student                  |
+| PUT    | `/students/<student_id>`       | Update an existing student            |
+| DELETE | `/students/<student_id>`       | Delete a student                      |
 
 ---
 
@@ -113,10 +121,11 @@ Student-Management-System/
 * ✅ Complete CRUD functionality
 * ✅ Database Statistics Dashboard
 * ✅ CSV export
-* ✅ Modular architecture
-* ✅ Automated testing with **pytest**
-* ✅ Flask REST API
-* ⬜ Automated API testing
+* ✅ Modular software architecture
+* ✅ Automated database testing with **pytest**
+* ✅ Complete Flask REST API
+* ✅ Manual REST API testing with **Thunder Client**
+* ⬜ Automated REST API testing
 * ⬜ Authentication/Login system
 * ⬜ Web frontend
 
@@ -139,23 +148,28 @@ Student-Management-System/
 * ✅ Added robust input validation and exception handling
 * ✅ Implemented GPA sorting using SQL `ORDER BY`
 * ✅ Built a Database Statistics Dashboard
-* ✅ Added CSV export functionality with file error handling
-* ✅ Implemented automated unit testing using **pytest**
+* ✅ Added CSV export functionality
+* ✅ Implemented automated database unit testing using **pytest**
 
   * CRUD operations
   * Student lookup
+  * Student search
   * GPA sorting
   * Database statistics
   * Duplicate ID handling
   * CSV export
   * Isolated test database with automatic cleanup
-* ✅ Developed a REST API using **Flask**
+* ✅ Developed a complete REST API using **Flask**
 
   * GET endpoints
   * POST endpoint
   * PUT endpoint
   * DELETE endpoint
-  * JSON request and response handling
+  * Search endpoint
+  * GPA sorting endpoint
+  * Statistics endpoint
+  * CSV export endpoint
+  * JSON serialization
   * Proper HTTP status codes
   * Request validation
 * ✅ Manually tested all REST API endpoints using **Thunder Client**
@@ -202,9 +216,9 @@ The SQLite database will automatically be created the first time the application
 
 ---
 
-## Running the Test Suite
+## Running the Database Test Suite
 
-Execute the automated database tests with:
+Execute the automated tests with:
 
 ```bash
 pytest -v
@@ -235,9 +249,12 @@ This project helped me gain practical experience with:
 * SQLite integration with Python
 * CRUD application development
 * REST API development
+* RESTful API design
 * Flask
 * JSON serialization
 * HTTP request handling
+* HTTP methods (GET, POST, PUT, DELETE)
+* Query parameter handling
 * Modular software architecture
 * Input validation
 * Regular Expressions (Regex)
@@ -252,7 +269,7 @@ This project helped me gain practical experience with:
 
 ## Planned Improvements
 
-* Automated API testing with **pytest**
+* Automated REST API testing with **pytest**
 * Authentication/Login system
 * Web frontend using HTML/CSS/JavaScript or React
 * Advanced search filters
