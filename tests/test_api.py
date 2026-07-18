@@ -210,3 +210,107 @@ def test_sort_empty_database(client):
 
     assert response.status_code == 200
     assert response.get_json() == []
+
+def test_create_student(client):
+    response = client.post("/students", json=SAMPLE_STUDENT)
+
+    assert response.status_code == 201
+    assert response.get_json()["message"] == "Student added successfully"
+    assert response.get_json()["student"] == SAMPLE_STUDENT
+
+def test_create_students_invalid_gpa(client):
+    response = client.post("/students", json={
+        "first_name": "Shovana",
+        "last_name": "Khatiwada",
+        "student_id": 12346,
+        "major": "Sociology",
+        "year": 2014,
+        "gpa": 8,
+        "email": "shovana@example.com"
+    })
+
+    assert response.status_code == 400
+    assert response.get_json()["error"] == "Invalid GPA"
+
+def test_create_students_invalid_first_name(client):
+    response = client.post("/students", json={
+        "first_name": 1111,
+        "last_name": "Khatiwada",
+        "student_id": 12346,
+        "major": "Sociology",
+        "year": 2014,
+        "gpa": 3.85,
+        "email": "shovana@example.com"
+    })
+
+    assert response.status_code == 400
+    assert response.get_json()["error"] == "Invalid First Name"
+
+def test_create_students_invalid_last_name(client):
+    response = client.post("/students", json={
+        "first_name": "Shovana",
+        "last_name": 1111,
+        "student_id": 12346,
+        "major": "Sociology",
+        "year": 2014,
+        "gpa": 3.85,
+        "email": "shovana@example.com"
+    })
+
+    assert response.status_code == 400
+    assert response.get_json()["error"] == "Invalid Last Name"
+
+def test_create_students_invalid_email(client):
+    response = client.post("/students", json={
+        "first_name": "Shovana",
+        "last_name": "Khatiwada",
+        "student_id": 12346,
+        "major": "Sociology",
+        "year": 2014,
+        "gpa": 3.85,
+        "email": "abcd1234"
+    })
+
+    assert response.status_code == 400
+    assert response.get_json()["error"] == "Invalid email format"
+
+def test_create_students_invalid_year(client):
+    response = client.post("/students", json={
+        "first_name": "Shovana",
+        "last_name": "Khatiwada",
+        "student_id": 12346,
+        "major": "Sociology",
+        "year": "abcd1234",
+        "gpa": 3.85,
+        "email": "shovana@example.com"
+    })
+
+    assert response.status_code == 400
+    assert response.get_json()["error"] == "Invalid Year"
+
+def test_create_students_missing_field(client):
+    response = client.post("/students", json={
+        "first_name": "Shovana",
+        "last_name": "Khatiwada",
+        "student_id": 12346,
+        "major": "Sociology",
+        "year": 2014,
+        "gpa": 3.85,
+    })
+
+    assert response.status_code == 400
+    assert response.get_json()["error"] == "Missing required field: email"
+
+def test_create_student_duplicate_id(client):
+    response = client.post("/students", json=SAMPLE_STUDENT)
+    assert response.status_code == 201
+
+    response = client.post("/students", json=SAMPLE_STUDENT)
+    assert response.status_code == 409
+    assert response.get_json()["error"] == "Student ID already exists."
+
+def test_create_student_no_json(client):
+    response = client.post("/students", json={})
+
+    assert response.status_code == 400
+    assert response.get_json()["error"] == "Malformed or missing JSON payload"

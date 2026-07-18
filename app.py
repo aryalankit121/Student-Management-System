@@ -164,36 +164,26 @@ def export_to_csv():
 
 @app.route("/students", methods=["POST"])
 def post_student():
-    data = request.json
+    data = request.get_json(silent=True)
 
     if not data:
         return {"error": "Malformed or missing JSON payload"}, 400
 
     try:
-        if not utils.is_valid_gpa(data["gpa"]):
-            return{
-                "error": "Invalid GPA"
-            },400
-        
-        if not utils.is_valid_email(data["email"]):
-            return{
-                "error": "Invalid email format"
-            },400
-
         if not utils.is_valid_name(data["first_name"]):
-            return {
-                "error": "Invalid First Name"
-                }, 400
-        
+            return {"error": "Invalid First Name"}, 400
+
         if not utils.is_valid_name(data["last_name"]):
-            return {
-                "error": "Invalid Last Name"
-                }, 400
-    
+            return {"error": "Invalid Last Name"}, 400
+
         if not utils.is_valid_year(data["year"]):
-            return {
-                "error": "Invalid Year"
-                }, 400
+            return {"error": "Invalid Year"}, 400
+
+        if not utils.is_valid_gpa(data["gpa"]):
+            return {"error": "Invalid GPA"}, 400
+
+        if not utils.is_valid_email(data["email"]):
+            return {"error": "Invalid email format"}, 400
 
         student = Student(
             first_name=data["first_name"],
