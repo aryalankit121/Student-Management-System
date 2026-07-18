@@ -1,8 +1,38 @@
 # Student Management System
 
+![Python](https://img.shields.io/badge/Python-3-blue)
+![Flask](https://img.shields.io/badge/Flask-3.x-black)
+![SQLite](https://img.shields.io/badge/SQLite-Database-blue)
+![Pytest](https://img.shields.io/badge/Tests-pytest-green)
+![REST API](https://img.shields.io/badge/API-REST-blueviolet)
+![Tests](https://img.shields.io/badge/47%20Tests-Passing-brightgreen)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
 A modular **Student Management System** built with **Python**, **SQLite**, and **Flask** that demonstrates object-oriented programming, relational database design, REST API development, SQL operations, automated testing, and clean software architecture.
 
-This project was developed as a backend learning project to strengthen my understanding of databases, CRUD operations, input validation, exception handling, software testing, API development, and modular software design.
+This project was developed to strengthen my understanding of backend software engineering concepts including relational database design, REST API development, CRUD operations, input validation, automated testing, exception handling, and modular software architecture.
+
+---
+
+## Highlights
+
+- Command-line application with complete CRUD functionality
+- RESTful Flask API with 10 endpoints
+- SQLite relational database integration
+- 47 automated tests using pytest
+- CSV export functionality
+- Modular object-oriented architecture
+- Robust input validation and exception handling
+
+---
+
+## Project Statistics
+
+- ~1,500+ lines of Python
+- 10 REST API endpoints
+- 47 automated tests
+- 2 user interfaces (CLI + REST API)
+- 100% modular architecture
 
 ---
 
@@ -57,8 +87,9 @@ This project was developed as a backend learning project to strengthen my unders
 
 ### Testing
 
-* Comprehensive automated database unit tests using **pytest**
-* Manual REST API testing using **Thunder Client**
+* Comprehensive automated database testing using pytest
+* Comprehensive automated REST API testing using pytest
+* Manual REST API verification using Thunder Client during development
 
 ---
 
@@ -69,6 +100,7 @@ This project was developed as a backend learning project to strengthen my unders
 * SQLite3
 * SQL
 * Pytest
+* Thunder Client
 * Regular Expressions (`re`)
 * CSV (`csv`)
 * Git
@@ -88,7 +120,9 @@ Student-Management-System/
 ├── student.py              # Student class
 ├── utils.py                # Validation helper functions
 ├── tests/
-│   └── test_database.py    # Automated database test suite
+│   ├── conftest.py          # Shared pytest fixtures
+│   ├── test_api.py          # REST API test suite
+│   └── test_database.py     # Database test suite
 ├── students.db             # SQLite database (generated at runtime)
 ├── students.csv            # Exported CSV file (generated on demand)
 ├── README.md
@@ -114,6 +148,19 @@ Student-Management-System/
 
 ---
 
+## Architecture
+
+The project is organized into modular components with clear separation of responsibilities.
+
+- `student.py` — Student data model
+- `database.py` — Database operations and SQL queries
+- `utils.py` — Input validation helpers
+- `menu.py` — Command-line interface
+- `app.py` — Flask REST API
+- `tests/` — Automated database and API tests
+
+---
+
 ## Project Evolution
 
 * ✅ Command-line Student Management System
@@ -123,15 +170,15 @@ Student-Management-System/
 * ✅ CSV export
 * ✅ Modular software architecture
 * ✅ Automated database testing with **pytest**
-* ✅ Complete Flask REST API
+* ✅ Complete RESTful Flask API
 * ✅ Manual REST API testing with **Thunder Client**
-* ⬜ Automated REST API testing
+* ✅ Automated REST API testing
 * ⬜ Authentication/Login system
 * ⬜ Web frontend
 
 ---
 
-## Current Progress
+## Completed Features
 
 * ✅ Designed the `Student` class using Object-Oriented Programming
 * ✅ Designed a relational SQLite database for persistent storage
@@ -159,7 +206,7 @@ Student-Management-System/
   * Duplicate ID handling
   * CSV export
   * Isolated test database with automatic cleanup
-* ✅ Developed a complete REST API using **Flask**
+* ✅ Built a RESTful API using **Flask**
 
   * GET endpoints
   * POST endpoint
@@ -172,6 +219,15 @@ Student-Management-System/
   * JSON serialization
   * Proper HTTP status codes
   * Request validation
+
+* ✅ Developed a comprehensive REST API test suite using pytest
+
+  * Tested every API endpoint
+  * Tested successful and error responses
+  * Validated request handling and HTTP status codes
+  * Used Flask's built-in test client
+  * Shared fixtures with conftest.py
+
 * ✅ Manually tested all REST API endpoints using **Thunder Client**
 
 ---
@@ -216,7 +272,7 @@ The SQLite database will automatically be created the first time the application
 
 ---
 
-## Running the Database Test Suite
+## Running the Test Suite
 
 Execute the automated tests with:
 
@@ -224,32 +280,42 @@ Execute the automated tests with:
 pytest -v
 ```
 
-Current test coverage includes:
+The automated test suite covers both the database layer and the REST API.
 
-* Student creation
-* Student retrieval
-* Student updates
-* Student deletion
-* Duplicate ID protection
-* Search by name
-* Retrieve all students
-* GPA sorting
-* Database statistics
-* CSV export
-* Empty database export handling
+### Database Tests
+
+- CRUD operations
+- Student lookup
+- Student search
+- GPA sorting
+- Database statistics
+- CSV export
+- Duplicate ID protection
+- Empty database export handling
+
+### REST API Tests
+
+- All GET endpoints
+- POST endpoint
+- PUT endpoint
+- DELETE endpoint
+- Request validation
+- Error handling
+- HTTP status codes
+- JSON request/response handling
+- CSV export endpoint
 
 ---
 
 ## Skills Demonstrated
 
-This project helped me gain practical experience with:
+This project provided hands-on experience with:
 
 * Object-Oriented Programming (OOP)
 * SQL and relational databases
 * SQLite integration with Python
 * CRUD application development
 * REST API development
-* RESTful API design
 * Flask
 * JSON serialization
 * HTTP request handling
@@ -261,7 +327,11 @@ This project helped me gain practical experience with:
 * CSV file handling
 * Exception handling
 * Automated testing with **pytest**
-* Manual API testing using **Thunder Client**
+* Flask testing
+* Flask test client
+* REST API testing
+* Test-driven validation
+* Manual API testing using Thunder Client
 * Git version control
 * GitHub workflow
 
@@ -269,14 +339,14 @@ This project helped me gain practical experience with:
 
 ## Planned Improvements
 
-* Automated REST API testing with **pytest**
-* Authentication/Login system
+* Authentication and user login
 * Web frontend using HTML/CSS/JavaScript or React
 * Advanced search filters
-
   * Major
   * Graduation Year
   * GPA range
+* Pagination for API responses
+* API documentation with Swagger/OpenAPI
 
 ---
 
