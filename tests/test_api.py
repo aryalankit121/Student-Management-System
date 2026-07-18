@@ -1,6 +1,4 @@
-import os
 import pytest
-import database
 
 from app import app
 
@@ -80,6 +78,10 @@ def client(test_db):
     with app.test_client() as client:
         yield client
 
+# ==========================================================
+# GET /
+# ==========================================================
+
 def test_get_home(client):
     response = client.get("/")
 
@@ -90,6 +92,10 @@ def test_get_home(client):
     assert retrieved["project"] == "Student Management System API"
     assert retrieved["version"] == "1.0"
     assert retrieved["status"] == "running"
+
+# ==========================================================
+# GET /students
+# ==========================================================
 
 def test_get_students(client):
     client.post("/students", json=SAMPLE_STUDENT)
@@ -115,6 +121,10 @@ def test_get_students_empty_database(client):
     assert response.status_code == 200
     assert response.get_json() == []
 
+# ==========================================================
+# GET /students/<student_id>
+# ==========================================================
+
 def test_get_student_by_id(client):
     client.post("/students", json=SAMPLE_STUDENT)
 
@@ -139,6 +149,10 @@ def test_get_student_by_id_not_found(client):
 
     assert response.get_json()["error"] == "Student not found"
 
+# ==========================================================
+# DELETE /students/<student_id>
+# ==========================================================
+
 def test_delete_student_by_id(client):
     client.post("/students", json=SAMPLE_STUDENT)
 
@@ -157,6 +171,10 @@ def test_no_student_to_delete(client):
 
     assert response.status_code == 404
     assert response.get_json()["error"] == "Student not found"
+
+# ==========================================================
+# GET /students/statistics
+# ==========================================================
 
 def test_get_students_statistics(client):
     client.post("/students", json=SAMPLE_STUDENT)
@@ -190,6 +208,10 @@ def test_get_students_statistics_empty_database(client):
 
     assert response.status_code == 404
     assert response.get_json()["error"] == "No Students in the database"
+
+# ==========================================================
+# GET /students/search
+# ==========================================================
 
 def test_get_students_by_name(client):
     client.post("/students", json=SAMPLE_STUDENT)
@@ -233,6 +255,10 @@ def test_sort_students_ascending(client):
     assert students[0] == SAMPLE_STUDENT_2
     assert students[1] == SAMPLE_STUDENT
 
+# ==========================================================
+# GET /students/sorted
+# ==========================================================
+
 def test_sort_students_descending(client):
     client.post("/students", json=SAMPLE_STUDENT)
     client.post("/students", json=SAMPLE_STUDENT_2)
@@ -260,6 +286,10 @@ def test_sort_empty_database(client):
     assert response.status_code == 200
     assert response.get_json() == []
 
+# ==========================================================
+# POST /students
+# ==========================================================
+
 def test_create_student(client):
     response = client.post("/students", json=SAMPLE_STUDENT)
 
@@ -267,37 +297,37 @@ def test_create_student(client):
     assert response.get_json()["message"] == "Student added successfully"
     assert response.get_json()["student"] == SAMPLE_STUDENT
 
-def test_create_students_invalid_gpa(client):
+def test_create_student_invalid_gpa(client):
     response = client.post("/students", json=SAMPLE_STUDENT_INVALID_GPA)
 
     assert response.status_code == 400
     assert response.get_json()["error"] == "Invalid GPA"
 
-def test_create_students_invalid_first_name(client):
+def test_create_student_invalid_first_name(client):
     response = client.post("/students", json=SAMPLE_STUDENT_INVALID_FIRST_NAME)
 
     assert response.status_code == 400
     assert response.get_json()["error"] == "Invalid First Name"
 
-def test_create_students_invalid_last_name(client):
+def test_create_student_invalid_last_name(client):
     response = client.post("/students", json=SAMPLE_STUDENT_INVALID_LAST_NAME)
 
     assert response.status_code == 400
     assert response.get_json()["error"] == "Invalid Last Name"
 
-def test_create_students_invalid_email(client):
+def test_create_student_invalid_email(client):
     response = client.post("/students", json=SAMPLE_STUDENT_INVALID_EMAIL)
 
     assert response.status_code == 400
     assert response.get_json()["error"] == "Invalid email format"
 
-def test_create_students_invalid_year(client):
+def test_create_student_invalid_year(client):
     response = client.post("/students", json=SAMPLE_STUDENT_INVALID_YEAR)
 
     assert response.status_code == 400
     assert response.get_json()["error"] == "Invalid Year"
 
-def test_create_students_missing_field(client):
+def test_create_student_missing_field(client):
     response = client.post("/students", json={
         "first_name": "Shovana",
         "last_name": "Khatiwada",
@@ -323,6 +353,10 @@ def test_create_student_no_json(client):
 
     assert response.status_code == 400
     assert response.get_json()["error"] == "Malformed or missing JSON payload"
+
+# ==========================================================
+# PUT /students/<student_id>
+# ==========================================================
 
 def test_update_student(client):
     response = client.post("/students", json=SAMPLE_STUDENT)
@@ -427,6 +461,20 @@ def test_update_student_no_json(client):
     assert response.status_code == 400
     assert response.get_json()["error"] == "Malformed or missing JSON payload"
 
+# ==========================================================
+# GET /students/export
+# ==========================================================
 
+def test_export_to_csv(client):
+    response = client.post("/students", json=SAMPLE_STUDENT)
+    assert response.status_code == 201
 
+    response = client.get("/students/export")
+    assert response.status_code == 200
+    assert response.get_json()["message"] == "Students successfully exported to CSV."
+
+def test_export_to_csv_empty_database(client):
+    response = client.get("/students/export")
+    assert response.status_code == 400
+    assert response.get_json()["error"] == "No students available to export."
 
