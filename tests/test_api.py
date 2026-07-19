@@ -31,6 +31,7 @@ SAMPLE_STUDENT_INVALID_FIRST_NAME = {
     "gpa": 3.85,
     "email": "shovana@example.com"
 }
+
 SAMPLE_STUDENT_INVALID_LAST_NAME = {
     "first_name": "Shovana",
     "last_name": 1111,
@@ -241,6 +242,10 @@ def test_get_students_by_invalid_name(client):
     assert response.status_code == 400
     assert response.get_json()["error"] == "Invalid Name format"
 
+# ==========================================================
+# GET /students/sorted
+# ==========================================================
+
 def test_sort_students_ascending(client):
     client.post("/students", json=SAMPLE_STUDENT)
     client.post("/students", json=SAMPLE_STUDENT_2)
@@ -254,10 +259,6 @@ def test_sort_students_ascending(client):
     assert len(students) == 2
     assert students[0] == SAMPLE_STUDENT_2
     assert students[1] == SAMPLE_STUDENT
-
-# ==========================================================
-# GET /students/sorted
-# ==========================================================
 
 def test_sort_students_descending(client):
     client.post("/students", json=SAMPLE_STUDENT)

@@ -26,16 +26,6 @@ This project was developed to strengthen my understanding of backend software en
 
 ---
 
-## Project Statistics
-
-- ~1,500+ lines of Python
-- 10 REST API endpoints
-- 47 automated tests
-- 2 user interfaces (CLI + REST API)
-- 100% modular architecture
-
----
-
 ## Features
 
 ### Command-Line Application
