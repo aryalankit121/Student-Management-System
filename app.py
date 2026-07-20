@@ -1,10 +1,12 @@
 from flask import Flask, request
+from flask_cors import CORS
 import database
 from student import Student
 import sqlite3
 import utils
 
 app = Flask(__name__)
+CORS(app)
 
 ALLOWED_FIELDS = {
     "first_name",
