@@ -20,7 +20,7 @@ function Navbar() {
                                     : "hover:text-blue-400"
                             }
                         >
-                            Home
+                            Dashboard
                         </NavLink>
                     </li>
                     <li>
@@ -46,18 +46,6 @@ function Navbar() {
                             }
                         >
                             Add Student
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink
-                            to="/statistics"
-                            className={({ isActive }) =>
-                                isActive
-                                    ? "text-blue-400 font-semibold"
-                                    : "hover:text-blue-400"
-                            }
-                        >
-                            Statistics
                         </NavLink>
                     </li>
                 </ul>

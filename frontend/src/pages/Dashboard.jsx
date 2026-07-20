@@ -22,7 +22,7 @@ export default function Dashboard() {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-100 p-8">
+        <div className="min-h-screen bg-gray-200 p-8">
             <h1 className="text-3xl font-bold mb-8">
                 Dashboard Overview
             </h1>
