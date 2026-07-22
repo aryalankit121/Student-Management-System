@@ -30,6 +30,20 @@ export default function Students() {
         }
     }
 
+    function handleDelete(student_id) {
+        if (!window.confirm("Are you sure you want to delete this student?")) {
+                    return;
+                }
+
+        axios
+            .delete(`http://localhost:5000/students/${student_id}`)
+            .then(() => {
+                setStudents(previousStudents =>
+                    previousStudents.filter(student => student.student_id !== student_id)
+                );
+            });
+    }
+
     return(
         <div className="min-h-screen bg-gray-200 p-8">
             <h1 className="mb-5 text-3xl font-bold">Students</h1>
@@ -63,13 +77,16 @@ export default function Students() {
                         {students.map((student) => (
                             <tr className="border-b hover:bg-blue-50" key={student.student_id}>
                                 <td className="border-r border-gray-300 px-6 py-4 font-mono font-semibold">{student.student_id}</td>
-                                <td className="px-6 py-4 font-semibold">{student.first_name + " " + student.last_name}</td>
+                                <td className="px-6 py-4 font-semibold">{student.first_name} {student.last_name}</td>
                                 <td className="px-6 py-4">{student.major}</td>
                                 <td className="px-6 py-4">{student.year}</td>
                                 <td className="px-6 py-4 font-semibold text-blue-500">{student.gpa}</td>
                                 <td className="border-l border-gray-300 px-6 py-4">
                                     <button className="mr-2 rounded-md bg-blue-500 px-3 py-1 text-white hover:bg-blue-600">Edit</button>
-                                    <button className="rounded-md bg-red-500 px-3 py-1 text-white hover:bg-red-600">Delete</button>
+                                    <button onClick={() => handleDelete(student.student_id)}
+                                            className="rounded-md bg-red-500 px-3 py-1 text-white hover:bg-red-600">
+                                            Delete
+                                    </button>
                                 </td>
                             </tr>
                         ))}
