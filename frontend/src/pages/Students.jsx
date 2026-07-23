@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from"react-router-dom";
 
 export default function Students() {
     const [students, setStudents] = useState([])
     const [search, setSearch] = useState("")
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios
@@ -28,6 +30,10 @@ export default function Students() {
                     setStudents([response.data])
                 });
         }
+    }
+
+    function handleEdit(student_id) {
+        navigate(`/students/edit/${student_id}`);
     }
 
     function handleDelete(student_id) {
@@ -82,7 +88,10 @@ export default function Students() {
                                 <td className="px-6 py-4">{student.year}</td>
                                 <td className="px-6 py-4 font-semibold text-blue-500">{student.gpa}</td>
                                 <td className="border-l border-gray-300 px-6 py-4">
-                                    <button className="mr-2 rounded-md bg-blue-500 px-3 py-1 text-white hover:bg-blue-600">Edit</button>
+                                    <button onClick={() => handleEdit(student.student_id)}
+                                            className="mr-2 rounded-md bg-blue-500 px-3 py-1 text-white hover:bg-blue-600">
+                                            Edit
+                                            </button>
                                     <button onClick={() => handleDelete(student.student_id)}
                                             className="rounded-md bg-red-500 px-3 py-1 text-white hover:bg-red-600">
                                             Delete
@@ -95,6 +104,4 @@ export default function Students() {
             </div>
         </div>
     );
-
-
 }
