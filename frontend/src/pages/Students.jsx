@@ -5,6 +5,8 @@ import { useNavigate } from"react-router-dom";
 export default function Students() {
     const [students, setStudents] = useState([])
     const [search, setSearch] = useState("")
+    const [error, setError] = useState("")
+    const query = search.trim();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -12,22 +14,62 @@ export default function Students() {
             .get("http://localhost:5000/students")
             .then((response) => {
                 setStudents(response.data)
+                setError("");
+            })
+            .catch((error) => {
+                setError(
+                    error.response?.data?.error ||
+                    "Something went wrong."
+                );
             });
     }, []);
 
-    function handleSearch() {
-        if (isNaN(search)) {
+    function handleSearch(e) {
+        if (e) e.preventDefault();
+        setError("");
+        
+        if (query === "") {
             axios
-                .get(`http://localhost:5000/students/search?name=${search}`)
+                .get("http://localhost:5000/students")
                 .then((response) => {
-                    setStudents(response.data)
+                    setStudents(response.data);
+                    setError("");
+                })
+                .catch((error) => {
+                    setError(
+                        error.response?.data?.error ||
+                        "Something went wrong."
+                    );
                 });
+
+            return;
         }
-        else {
+
+        if (isNaN(query)) {
             axios
-                .get(`http://localhost:5000/students/${search}`)
+                .get(`http://localhost:5000/students/search?name=${query}`)
                 .then((response) => {
-                    setStudents([response.data])
+                    setStudents(response.data);
+                    setError("");
+                })
+                .catch((error) => {
+                    setError(
+                        error.response?.data?.error ||
+                        "Something went wrong."
+                    );
+                });
+        } else {
+            axios
+                .get(`http://localhost:5000/students/${query}`)
+                .then((response) => {
+                    setStudents([response.data]);
+                    setError("");
+                })
+                .catch((error) => {
+                    setError(
+                        error.response?.data?.error ||
+                        "Something went wrong."
+                    );
                 });
         }
     }
@@ -44,8 +86,15 @@ export default function Students() {
         axios
             .delete(`http://localhost:5000/students/${student_id}`)
             .then(() => {
+                setError("");
                 setStudents(previousStudents =>
                     previousStudents.filter(student => student.student_id !== student_id)
+                );
+            })
+            .catch((error) => {
+                setError(
+                    error.response?.data?.error ||
+                    "Something went wrong."
                 );
             });
     }
@@ -54,18 +103,50 @@ export default function Students() {
         <div className="min-h-screen bg-gray-200 p-8">
             <h1 className="mb-5 text-3xl font-bold">Students</h1>
             <div className="mb-8 max-w-4xl rounded-xl bg-white p-4 shadow-lg">
-                <div className="flex gap-10">
-                    <input className="w-full max-w-md p-2 border-2 border-slate-300 rounded-md outline-none transition-all duration-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
-                            placeholder="Search by Student ID or Name..."
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
+                <form onSubmit={handleSearch} className="flex gap-10">
+                    <input
+                        className="w-full max-w-md p-2 border-2 border-slate-300 rounded-md outline-none transition-all duration-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
+                        placeholder="Search by Student ID or Name..."
+                        value={search}
+                        onChange={(e) => {
+                            setSearch(e.target.value);
+                            setError("");
+                        }}
                     />
-                    <button onClick={handleSearch}
-                            type="submit"
-                            className="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                            🔍 Search
+                    <button
+                        type="submit"
+                        className="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        🔍 Search
                     </button>
-                </div>
+                    <button
+                        type="button"
+                        className="flex items-center gap-2 rounded-md bg-gray-400 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                        onClick={() => {
+                            setSearch("");
+                            setError("");
+
+                            axios
+                                .get("http://localhost:5000/students")
+                                .then((response) => {
+                                    setStudents(response.data);
+                                })
+                                .catch((error) => {
+                                    setError(
+                                        error.response?.data?.error ||
+                                        "Something went wrong."
+                                    );
+                                });
+                        }}
+                    >
+                        Clear
+                    </button>
+                </form>
+                
+                {error && (
+                    <div className="mt-6 rounded-md border border-red-300 bg-red-100 p-3 text-red-700">
+                        <span className="font-semibold">⚠️ Error:</span> {error}
+                    </div>
+                )}
             </div>
             <div className="overflow-hidden rounded-xl bg-white shadow-lg">
                 <table className="w-full">
@@ -80,7 +161,14 @@ export default function Students() {
                         </tr>
                     </thead>
                     <tbody>
-                        {students.map((student) => (
+                        {students.length === 0 ? (
+                            <tr>
+                                <td colSpan="6" className="py-8 text-center text-gray-500">
+                                    No students found.
+                                </td>
+                            </tr>
+                        ) : (
+                        students.map((student) => (
                             <tr className="border-b hover:bg-blue-50" key={student.student_id}>
                                 <td className="border-r border-gray-300 px-6 py-4 font-mono font-semibold">{student.student_id}</td>
                                 <td className="px-6 py-4 font-semibold">{student.first_name} {student.last_name}</td>
@@ -98,7 +186,8 @@ export default function Students() {
                                     </button>
                                 </td>
                             </tr>
-                        ))}
+                        ))
+                        )}
                     </tbody>
                 </table>
             </div>
