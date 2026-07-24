@@ -13,6 +13,7 @@ export default function UpdateStudent() {
         email: ""
     };
     const [student, setStudent] = useState(initialStudent);
+    const [error, setError] = useState("")
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -25,6 +26,8 @@ export default function UpdateStudent() {
     }, [id]);
     
     function handleChange(e) {
+        setError("");
+
         setStudent({
             ...student,
             [e.target.name]: e.target.value
@@ -34,16 +37,21 @@ export default function UpdateStudent() {
     function handleSubmit(e) {
         e.preventDefault();
 
+        setError("");
+
         const { student_id, ...updatedStudent } = student;
 
         axios
             .put(`http://localhost:5000/students/${id}`, updatedStudent)
             .then((response) => {
-                alert(response.data.message);
+                setError("");
                 navigate("/students");
             })
             .catch((error) => {
-                alert(error.response.data.error);
+                setError(
+                    error.response?.data?.error ||
+                    "Something went wrong."
+                );
             });
     }
         
@@ -64,6 +72,7 @@ export default function UpdateStudent() {
                                 name="student_id"
                                 value={student.student_id}
                                 onChange={handleChange}
+                                placeholder="e.g. 1001"
                                 className="w-full rounded-md border-2 border-slate-300 p-2.5 outline-none transition-all duration-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
                                 readOnly
                             />
@@ -79,6 +88,7 @@ export default function UpdateStudent() {
                                 name="email"
                                 value={student.email}
                                 onChange={handleChange}
+                                placeholder="student@university.edu"
                                 className="w-full rounded-md border-2 border-slate-300 p-2.5 outline-none transition-all duration-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
                                 required
                             />
@@ -94,6 +104,7 @@ export default function UpdateStudent() {
                                 name="first_name"
                                 value={student.first_name}
                                 onChange={handleChange}
+                                placeholder="First Name"
                                 className="w-full rounded-md border-2 border-slate-300 p-2.5 outline-none transition-all duration-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
                                 required
                             />
@@ -109,6 +120,7 @@ export default function UpdateStudent() {
                                 name="last_name"
                                 value={student.last_name}
                                 onChange={handleChange}
+                                placeholder="Last Name"
                                 className="w-full rounded-md border-2 border-slate-300 p-2.5 outline-none transition-all duration-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
                                 required
                             />
@@ -143,6 +155,8 @@ export default function UpdateStudent() {
                                 placeholder="e.g. 2026"
                                 className="w-full rounded-md border-2 border-slate-300 p-2.5 outline-none transition-all duration-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
                                 required
+                                min="2020"
+                                max="2100"
                             />
                         </div>
 
@@ -176,6 +190,11 @@ export default function UpdateStudent() {
                         </div>
                     </div>
                 </form>
+                {error && (
+                    <div className="mt-6 rounded-md border border-red-300 bg-red-100 p-3 text-red-700">
+                        <span className="font-semibold">⚠️ Error:</span> {error}
+                    </div>
+                )}
             </div>
         </div>
         );

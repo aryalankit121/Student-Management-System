@@ -12,8 +12,13 @@ export default function AddStudent() {
         email: ""
     };
     const [student, setStudent] = useState(initialStudent);
+    const [error, setError] = useState("");
+    const [message, setMessage] = useState("");
 
     function handleChange(e) {
+        setError("");
+        setMessage("");
+
         setStudent({
             ...student,
             [e.target.name]: e.target.value
@@ -23,18 +28,27 @@ export default function AddStudent() {
     function handleSubmit(e) {
         e.preventDefault();
 
+        setError("");
+        setMessage("");
+
         axios
             .post("http://localhost:5000/students", student)
             .then((response) => {
-                alert(response.data.message);
+                setMessage(response.data.message);
+                setError("");
                 setStudent(initialStudent);
+            })
+            .catch((error) => {
+                setError(
+                    error.response?.data?.error ||
+                    "Something went wrong."
+                );
             });
     }
 
     return (
         <div className="min-h-screen bg-gray-200 p-8">
             <h1 className="mb-5 text-3xl font-bold">Add Student</h1>
-
             <div className="max-w-3xl rounded-xl bg-white p-8 shadow-lg">
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -51,6 +65,7 @@ export default function AddStudent() {
                                 placeholder="e.g. 1001"
                                 className="w-full rounded-md border-2 border-slate-300 p-2.5 outline-none transition-all duration-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
                                 required
+                                min="1"
                             />
                         </div>
 
@@ -131,6 +146,8 @@ export default function AddStudent() {
                                 placeholder="e.g. 2026"
                                 className="w-full rounded-md border-2 border-slate-300 p-2.5 outline-none transition-all duration-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
                                 required
+                                min="2020"
+                                max="2100"
                             />
                         </div>
 
@@ -164,6 +181,16 @@ export default function AddStudent() {
                         </div>
                     </div>
                 </form>
+                {error && (
+                    <div className="mt-6 rounded-md border border-red-300 bg-red-100 p-3 text-red-700">
+                        <span className="font-semibold">⚠️ Error:</span> {error}
+                    </div>
+                )}
+                {message && (
+                    <div className="mt-6 rounded-md border border-green-300 bg-green-100 p-3 text-green-700">
+                        <span className="font-semibold">✅ Success:</span> {message}
+                    </div>
+                )}
             </div>
         </div>
     );
