@@ -116,7 +116,7 @@ export default function Students() {
                         "Something went wrong."
                     );
                 });
-                
+
             return;
         }
 
@@ -131,6 +131,41 @@ export default function Students() {
                     error.response?.data?.error ||
                     "Something went wrong while sorting."
                 );
+            });
+    }
+
+    function handleExportCSV() {
+        setError("");
+
+        axios
+            .get("http://localhost:5000/students/export", {
+                responseType: "blob",
+            })
+            .then((response) => {
+                const url = window.URL.createObjectURL(response.data);
+
+                const link = document.createElement("a");
+                link.href = url;
+                link.download = "students.csv";
+
+                document.body.appendChild(link);
+                link.click();
+
+                link.remove();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(async (error) => {
+                if (error.response?.data) {
+                    try {
+                        const text = await error.response.data.text();
+                        const json = JSON.parse(text);
+                        setError(json.error);
+                    } catch {
+                        setError("Failed to download CSV file.");
+                    }
+                } else {
+                    setError("Failed to download CSV file.");
+                }
             });
     }
 
@@ -185,6 +220,13 @@ export default function Students() {
                         <option value="desc">GPA: Highest to Lowest</option>
                         <option value="asc">GPA: Lowest to Highest</option>
                     </select>
+                    <button
+                        type="button"
+                        onClick={handleExportCSV}
+                        className="cursor-pointer rounded-md border-2 border-slate-300 bg-green-200 p-2 text-sm font-medium text-gray-700 outline-none transition-all duration-200 focus:border-indigo-600 focus:ring-1 focus:ring-green-600"
+                    >
+                        Export CSV
+                    </button>
                 </form>
                 
                 {error && (

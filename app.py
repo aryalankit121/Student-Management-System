@@ -1,5 +1,6 @@
 from flask import Flask, request
 from flask_cors import CORS
+from flask import send_file
 import database
 from student import Student
 import sqlite3
@@ -146,17 +147,18 @@ def export_to_csv():
         success = database.export_students_to_csv()
 
         if not success:
-            return {
-                "error": "No students available to export."
-            }, 400
+            return {"error": "No students available to export."}, 400
 
-        return {
-            "message": "Students successfully exported to CSV."
-        }, 200
+        return send_file(
+            "students.csv",
+            as_attachment=True,
+            download_name="students.csv",
+            mimetype="text/csv"
+        )
 
     except PermissionError:
         return {
-            "error": "Permission denied. Please close 'students.csv' if it is open and try again."
+            "error": "Permission denied. Close students.csv and try again."
         }, 500
 
     except OSError as e:

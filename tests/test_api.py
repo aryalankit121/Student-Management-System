@@ -471,8 +471,18 @@ def test_export_to_csv(client):
     assert response.status_code == 201
 
     response = client.get("/students/export")
+
     assert response.status_code == 200
-    assert response.get_json()["message"] == "Students successfully exported to CSV."
+    assert response.mimetype == "text/csv"
+
+    csv_data = response.data.decode("utf-8")
+
+    assert "Student ID" in csv_data
+    assert str(SAMPLE_STUDENT["student_id"]) in csv_data
+    assert SAMPLE_STUDENT["first_name"] in csv_data
+    assert SAMPLE_STUDENT["last_name"] in csv_data
+    assert "attachment" in response.headers["Content-Disposition"]
+    assert "students.csv" in response.headers["Content-Disposition"]
 
 def test_export_to_csv_empty_database(client):
     response = client.get("/students/export")
