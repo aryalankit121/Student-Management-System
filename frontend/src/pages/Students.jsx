@@ -6,6 +6,7 @@ export default function Students() {
     const [students, setStudents] = useState([])
     const [search, setSearch] = useState("")
     const [error, setError] = useState("")
+    const [sort, setSort] = useState("");
     const query = search.trim();
     const navigate = useNavigate();
 
@@ -27,6 +28,7 @@ export default function Students() {
     function handleSearch(e) {
         if (e) e.preventDefault();
         setError("");
+        setSort("");
         
         if (query === "") {
             axios
@@ -99,6 +101,39 @@ export default function Students() {
             });
     }
 
+    function handleSortChange(e) {
+        const selectedSort = e.target.value;
+        setSort(selectedSort);
+
+        if (!selectedSort) {
+            axios.get("http://localhost:5000/students")
+                .then((response) => {
+                    setStudents(response.data);
+                })
+                .catch((error) => {
+                    setError(
+                        error.response?.data?.error ||
+                        "Something went wrong."
+                    );
+                });
+                
+            return;
+        }
+
+        axios
+            .get(`http://localhost:5000/students/sorted?order=${selectedSort}`)
+            .then((response) => {
+                setStudents(response.data);
+                setError("");
+            })
+            .catch((error) => {
+                setError(
+                    error.response?.data?.error ||
+                    "Something went wrong while sorting."
+                );
+            });
+    }
+
     return(
         <div className="min-h-screen bg-gray-200 p-8">
             <h1 className="mb-5 text-3xl font-bold">Students</h1>
@@ -123,6 +158,7 @@ export default function Students() {
                         className="flex items-center gap-2 rounded-md bg-gray-400 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                         onClick={() => {
                             setSearch("");
+                            setSort("");
                             setError("");
 
                             axios
@@ -140,6 +176,15 @@ export default function Students() {
                     >
                         Clear
                     </button>
+                    <select
+                        value={sort}
+                        onChange={handleSortChange}
+                        className="cursor-pointer rounded-md border-2 border-slate-300 bg-white p-2 text-sm font-medium text-gray-700 outline-none transition-all duration-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
+                    >
+                        <option value="">Default Order</option>
+                        <option value="desc">GPA: Highest to Lowest</option>
+                        <option value="asc">GPA: Lowest to Highest</option>
+                    </select>
                 </form>
                 
                 {error && (

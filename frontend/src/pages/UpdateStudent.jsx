@@ -155,7 +155,7 @@ export default function UpdateStudent() {
                                 placeholder="e.g. 2026"
                                 className="w-full rounded-md border-2 border-slate-300 p-2.5 outline-none transition-all duration-200 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600"
                                 required
-                                min="2020"
+                                min="2000"
                                 max="2100"
                             />
                         </div>
