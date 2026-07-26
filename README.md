@@ -5,12 +5,15 @@
 ![SQLite](https://img.shields.io/badge/SQLite-Database-blue)
 ![Pytest](https://img.shields.io/badge/Tests-pytest-green)
 ![REST API](https://img.shields.io/badge/API-REST-blueviolet)
+![React](https://img.shields.io/badge/React-19-61DAFB)
+![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-4.x-38BDF8)
+![Axios](https://img.shields.io/badge/Axios-HTTP%20Client-5A29E4)
 ![Tests](https://img.shields.io/badge/47%20Tests-Passing-brightgreen)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
-A modular **Student Management System** built with **Python**, **SQLite**, and **Flask** that demonstrates object-oriented programming, relational database design, REST API development, SQL operations, automated testing, and clean software architecture.
+This project began as a command-line application and gradually evolved into a complete full-stack web application. It showcases the progression from object-oriented programming and relational database management to REST API development and a modern React frontend.
 
-This project was developed to strengthen my understanding of backend software engineering concepts including relational database design, REST API development, CRUD operations, input validation, automated testing, exception handling, and modular software architecture.
+The application allows users to manage student records through an intuitive web interface while exposing a fully tested REST API and maintaining persistent storage with SQLite.
 
 ---
 
@@ -23,10 +26,59 @@ This project was developed to strengthen my understanding of backend software en
 - CSV export functionality
 - Modular object-oriented architecture
 - Robust input validation and exception handling
+- Modern React frontend with Tailwind CSS
+- Interactive dashboard with live statistics
+- Responsive React user interface
 
 ---
 
-## Features
+## Tech Stack
+
+### Frontend:
+- React
+- Tailwind CSS
+- Axios
+
+### Backend:
+- Flask
+- SQLite
+
+### Testing:
+- Pytest
+
+---
+
+## ✨ Features
+
+### 🌐 Web Application
+* Modern responsive React interface
+* Responsive navigation
+* Dashboard with live database statistics
+
+* Add new students
+* View all students
+* Search by Student ID
+* Search by student name
+* Update student information
+* Delete students with confirmation
+* Sort students by GPA
+* Export student records to CSV
+
+* Loading and error handling
+* CSV download through browser
+* Clean responsive UI
+
+### 📊 Dashboard
+
+* Total Students
+* Average GPA
+* Highest GPA
+* Lowest GPA
+* Number of Unique Majors
+* Quick Actions
+  * Add Student
+  * View Students
+  * Export Student Records
 
 ### Command-Line Application
 
@@ -61,6 +113,8 @@ This project was developed to strengthen my understanding of backend software en
 * Update existing student records
 * Delete student records
 * JSON request and response handling
+* Proper error responses
+* CSV file download
 * Proper HTTP status codes
 * Robust request validation
 * Duplicate Student ID protection
@@ -74,27 +128,66 @@ This project was developed to strengthen my understanding of backend software en
 * Prevent duplicate Student IDs
 * Object-oriented design using a `Student` class
 * Modular project architecture with reusable utility functions
+* Frontend form validation
+* Backend validation
 
 ### Testing
 
-* Comprehensive automated database testing using pytest
-* Comprehensive automated REST API testing using pytest
-* Manual REST API verification using Thunder Client during development
+The backend includes a comprehensive automated test suite built with pytest.
+The frontend was manually tested during development.
+
+#### Database Tests
+* CRUD operations
+* Student search
+* GPA sorting
+* Database statistics
+* Duplicate ID prevention
+* CSV export
+* Empty database handling
+#### API Tests
+* All REST endpoints
+* Success responses
+* Error responses
+* Request validation
+* HTTP status codes
+* JSON responses
+* CSV download endpoint
+
+#### Total Tests
+
+✅ 47 Passing Tests
 
 ---
 
 ## Technologies Used
 
-* Python 3
-* Flask
-* SQLite3
-* SQL
-* Pytest
-* Thunder Client
-* Regular Expressions (`re`)
-* CSV (`csv`)
-* Git
-* GitHub
+### Frontend
+
+- React
+- React Router
+- Axios
+- Tailwind CSS
+- JavaScript
+
+### Backend
+
+- Python
+- Flask
+- SQLite
+- SQL
+
+### Testing
+
+- Pytest
+- Flask Test Client
+
+### Development Tools
+
+- Git
+- GitHub
+- VS Code
+- Thunder Client
+- Vite
 
 ---
 
@@ -103,20 +196,45 @@ This project was developed to strengthen my understanding of backend software en
 ```text
 Student-Management-System/
 │
-├── app.py                  # Flask REST API
-├── main.py                 # Command-line application
-├── menu.py                 # Command-line user interface
-├── database.py             # Database operations and SQL queries
-├── student.py              # Student class
-├── utils.py                # Validation helper functions
+├── frontend/
+│   ├── public/
+│   │   ├── favicon.svg
+│   │   └── icons.svg
+│   │
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── App.jsx
+│   │   ├── index.css
+│   │   └── main.jsx
+│   │
+│   ├── index.html
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── vite.config.js
+│   ├── eslint.config.js
+│   └── .gitignore
+│
 ├── tests/
-│   ├── conftest.py          # Shared pytest fixtures
-│   ├── test_api.py          # REST API test suite
-│   └── test_database.py     # Database test suite
+│   ├── conftest.py
+│   ├── test_api.py
+│   └── test_database.py
+│
+├── app.py                  # Flask REST API
+├── database.py             # Database operations and SQL queries
+├── student.py              # Student model
+├── utils.py                # Validation helper functions
+├── menu.py                 # Command-line interface
+├── main.py                 # CLI entry point
+│
+├── requirements.txt
+├── pytest.ini
 ├── students.db             # SQLite database (generated at runtime)
-├── students.csv            # Exported CSV file (generated on demand)
+├── students.csv            # Exported CSV (generated on demand)
+│
 ├── README.md
-└── LICENSE
+├── LICENSE
+└── .gitignore
 ```
 
 ---
@@ -140,85 +258,43 @@ Student-Management-System/
 
 ## Architecture
 
-The project is organized into modular components with clear separation of responsibilities.
+The project follows a modular full-stack architecture with a clear separation between the frontend, backend, and database layers.
 
-- `student.py` — Student data model
-- `database.py` — Database operations and SQL queries
-- `utils.py` — Input validation helpers
-- `menu.py` — Command-line interface
-- `app.py` — Flask REST API
-- `tests/` — Automated database and API tests
+### Frontend
+
+- React
+- React Router
+- Axios
+- Tailwind CSS
+
+### Backend
+
+- Flask REST API
+- SQLite database
+- Student model
+- Validation utilities
+
+### Testing
+
+- Pytest
+- Flask Test Client
 
 ---
 
 ## Project Evolution
 
-* ✅ Command-line Student Management System
-* ✅ SQLite database integration
-* ✅ Complete CRUD functionality
-* ✅ Database Statistics Dashboard
-* ✅ CSV export
-* ✅ Modular software architecture
-* ✅ Automated database testing with **pytest**
-* ✅ Complete RESTful Flask API
-* ✅ Manual REST API testing with **Thunder Client**
-* ✅ Automated REST API testing
-* ⬜ Authentication/Login system
-* ⬜ Web frontend
-
----
-
-## Completed Features
-
-* ✅ Designed the `Student` class using Object-Oriented Programming
-* ✅ Designed a relational SQLite database for persistent storage
-* ✅ Implemented complete CRUD functionality
-
-  * Create student records
-  * Read student records
-  * Update student information
-  * Delete student records
-* ✅ Implemented student search by Student ID and Name
-* ✅ Built an interactive command-line interface
-* ✅ Converted SQL records into Python `Student` objects
-* ✅ Organized the project into modular components
-* ✅ Added robust input validation and exception handling
-* ✅ Implemented GPA sorting using SQL `ORDER BY`
-* ✅ Built a Database Statistics Dashboard
-* ✅ Added CSV export functionality
-* ✅ Implemented automated database unit testing using **pytest**
-
-  * CRUD operations
-  * Student lookup
-  * Student search
-  * GPA sorting
-  * Database statistics
-  * Duplicate ID handling
-  * CSV export
-  * Isolated test database with automatic cleanup
-* ✅ Built a RESTful API using **Flask**
-
-  * GET endpoints
-  * POST endpoint
-  * PUT endpoint
-  * DELETE endpoint
-  * Search endpoint
-  * GPA sorting endpoint
-  * Statistics endpoint
-  * CSV export endpoint
-  * JSON serialization
-  * Proper HTTP status codes
-  * Request validation
-
-* ✅ Developed a comprehensive REST API test suite using pytest
-
-  * Tested every API endpoint
-  * Tested successful and error responses
-  * Validated request handling and HTTP status codes
-  * Used Flask's built-in test client
-  * Shared fixtures with conftest.py
-
-* ✅ Manually tested all REST API endpoints using **Thunder Client**
+* ✅ Command-Line Application
+* ✅ SQLite Database
+* ✅ CRUD Operations
+* ✅ Statistics Dashboard
+* ✅ CSV Export
+* ✅ REST API
+* ✅ Automated Testing
+* ✅ React Frontend
+* ✅ Tailwind CSS UI
+* ✅ Full-Stack Integration
+* ⬜ Authentication
+* ⬜ Deployment
 
 ---
 
@@ -252,17 +328,31 @@ python main.py
 
 ---
 
-### Run the Flask REST API
+### Backend
 
 ```bash
+pip install -r requirements.txt
+
 python app.py
+```
+
+---
+
+### Frontend
+
+```bash
+cd frontend
+
+npm install
+
+npm run dev
 ```
 
 The SQLite database will automatically be created the first time the application is run if it does not already exist.
 
 ---
 
-## Running the Test Suite
+## Running the Backend Test Suite
 
 Execute the automated tests with:
 
@@ -319,9 +409,18 @@ This project provided hands-on experience with:
 * Automated testing with **pytest**
 * Flask testing
 * Flask test client
+* RESTful API Design
 * REST API testing
 * Test-driven validation
 * Manual API testing using Thunder Client
+* Frontend-Backend Integration
+* React
+* Tailwind CSS
+* Axios
+* Responsive Design
+* Component-Based Architecture
+* React Hooks
+* State Management
 * Git version control
 * GitHub workflow
 
@@ -330,7 +429,6 @@ This project provided hands-on experience with:
 ## Planned Improvements
 
 * Authentication and user login
-* Web frontend using HTML/CSS/JavaScript or React
 * Advanced search filters
   * Major
   * Graduation Year
@@ -350,7 +448,7 @@ Screenshots and demonstrations of both the command-line application and the REST
 
 **Ankit Aryal**
 
-Computer Science Student
+Computer Science Student  
 Catawba College
 
 GitHub: https://github.com/aryalankit121
