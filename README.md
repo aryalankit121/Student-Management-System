@@ -1,5 +1,15 @@
 # Student Management System
 
+---
+
+## 🌐 Live Demo
+
+**Frontend:** https://student-management-system-psi-blue.vercel.app
+
+**Backend API:** https://student-management-system-bmey.onrender.com
+
+---
+
 ![Python](https://img.shields.io/badge/Python-3-blue)
 ![Flask](https://img.shields.io/badge/Flask-3.x-black)
 ![SQLite](https://img.shields.io/badge/SQLite-Database-blue)
