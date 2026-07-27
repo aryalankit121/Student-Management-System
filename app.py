@@ -5,6 +5,7 @@ import database
 from student import Student
 import sqlite3
 import utils
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -218,6 +219,10 @@ def post_student():
 
 if __name__ == "__main__":
     database.setup_database()
-    app.run(debug=True)
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000)),
+        debug=False
+    )
 
 
