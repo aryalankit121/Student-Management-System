@@ -13,20 +13,20 @@
 
 This project began as a command-line application and gradually evolved into a complete full-stack web application. It showcases the progression from object-oriented programming and relational database management to REST API development and a modern React frontend.
 
-The application allows users to manage student records through an intuitive web interface while exposing a fully tested REST API and maintaining persistent storage with SQLite.
+The application allows users to manage student records through a responsive React frontend while exposing a fully tested REST API backed by SQLite. It demonstrates how a traditional Python CLI application can evolve into a complete full-stack software project.
 
 ---
 
 ## Highlights
 
-- Command-line application with complete CRUD functionality
+- Modern React frontend with Tailwind CSS
 - RESTful Flask API with 10 endpoints
+- Command-line application with complete CRUD functionality
 - SQLite relational database integration
 - 47 automated tests using pytest
 - CSV export functionality
 - Modular object-oriented architecture
 - Robust input validation and exception handling
-- Modern React frontend with Tailwind CSS
 - Interactive dashboard with live statistics
 - Responsive React user interface
 
@@ -78,7 +78,7 @@ The application allows users to manage student records through an intuitive web 
 * Quick Actions
   * Add Student
   * View Students
-  * Export Student Records
+  * Export CSV
 
 ### Command-Line Application
 
@@ -129,12 +129,13 @@ The application allows users to manage student records through an intuitive web 
 * Object-oriented design using a `Student` class
 * Modular project architecture with reusable utility functions
 * Frontend form validation
-* Backend validation
+* Server-side validation
 
 ### Testing
 
 The backend includes a comprehensive automated test suite built with pytest.
-The frontend was manually tested during development.
+
+The frontend was manually tested throughout development to verify functionality, responsiveness, and user interactions.
 
 #### Database Tests
 * CRUD operations
@@ -203,6 +204,9 @@ Student-Management-System/
 │   │
 │   ├── src/
 │   │   ├── components/
+|   |   |   |──dashboard/
+|   |   |   └──navbar/
+|   |   |
 │   │   ├── pages/
 │   │   ├── App.jsx
 │   │   ├── index.css
@@ -266,18 +270,20 @@ The project follows a modular full-stack architecture with a clear separation be
 - React Router
 - Axios
 - Tailwind CSS
+- Component-based architecture
 
 ### Backend
 
 - Flask REST API
 - SQLite database
-- Student model
-- Validation utilities
+- Object-oriented Student model
+- Input validation utilities
 
 ### Testing
 
 - Pytest
 - Flask Test Client
+- Automated API and database testing
 
 ---
 
@@ -392,6 +398,7 @@ The automated test suite covers both the database layer and the REST API.
 This project provided hands-on experience with:
 
 * Object-Oriented Programming (OOP)
+* Full-Stack Web Development
 * SQL and relational databases
 * SQLite integration with Python
 * CRUD application development
@@ -434,6 +441,7 @@ This project provided hands-on experience with:
   * Graduation Year
   * GPA range
 * Pagination for API responses
+* Docker containerization
 * API documentation with Swagger/OpenAPI
 
 ---
@@ -472,7 +480,7 @@ Update student information with real-time validation.
 
 ---
 
-### Search & Filtering
+### Search & Student Management
 
 ![Search](screenshots/search.png)
 
