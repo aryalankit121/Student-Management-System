@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import API_URL from "../api";
 
 export default function UpdateStudent() {
     const initialStudent = {
@@ -19,7 +20,7 @@ export default function UpdateStudent() {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:5000/students/${id}`)
+            .get(`${API_URL}/students/${id}`)
             .then((response) => {
                 setStudent(response.data);
             });
@@ -42,7 +43,7 @@ export default function UpdateStudent() {
         const { student_id, ...updatedStudent } = student;
 
         axios
-            .put(`http://localhost:5000/students/${id}`, updatedStudent)
+            .put(`${API_URL}/students/${id}`, updatedStudent)
             .then((response) => {
                 setError("");
                 navigate("/students");

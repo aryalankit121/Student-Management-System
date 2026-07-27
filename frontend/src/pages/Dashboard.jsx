@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import StatCard from "../components/dashboard/StatCard";
 import { useNavigate } from "react-router-dom";
+import API_URL from "../api";
 
 export default function Dashboard() {
     const [stats, setStats] = useState(null);
@@ -10,7 +11,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:5000/students/statistics")
+            .get(`${API_URL}/students/statistics`)
             .then((response) => {
                 setStats(response.data.statistics);
             })
@@ -42,7 +43,7 @@ export default function Dashboard() {
         setError("");
 
         axios
-            .get("http://localhost:5000/students/export", {
+            .get(`${API_URL}/students/export`, {
                 responseType: "blob",
             })
             .then((response) => {

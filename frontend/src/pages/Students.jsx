@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import API_URL from "../api";
 
 export default function Students() {
     const [students, setStudents] = useState([]);
@@ -12,7 +13,7 @@ export default function Students() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:5000/students")
+            .get(`${API_URL}/students`)
             .then((response) => {
                 setStudents(response.data);
                 setError("");
@@ -32,7 +33,7 @@ export default function Students() {
 
         if (query === "") {
             axios
-                .get("http://localhost:5000/students")
+                .get(`${API_URL}/students`)
                 .then((response) => {
                     setStudents(response.data);
                     setError("");
@@ -49,7 +50,7 @@ export default function Students() {
 
         if (isNaN(query)) {
             axios
-                .get(`http://localhost:5000/students/search?name=${query}`)
+                .get(`${API_URL}/students/search?name=${query}`)
                 .then((response) => {
                     setStudents(response.data);
                     setError("");
@@ -62,7 +63,7 @@ export default function Students() {
                 });
         } else {
             axios
-                .get(`http://localhost:5000/students/${query}`)
+                .get(`${API_URL}/students/${query}`)
                 .then((response) => {
                     setStudents([response.data]);
                     setError("");
@@ -86,7 +87,7 @@ export default function Students() {
         }
 
         axios
-            .delete(`http://localhost:5000/students/${student_id}`)
+            .delete(`${API_URL}/students/${student_id}`)
             .then(() => {
                 setError("");
                 setStudents((previousStudents) =>
@@ -109,7 +110,7 @@ export default function Students() {
 
         if (!selectedSort) {
             axios
-                .get("http://localhost:5000/students")
+                .get("${API_URL}/students")
                 .then((response) => {
                     setStudents(response.data);
                 })
@@ -124,7 +125,7 @@ export default function Students() {
         }
 
         axios
-            .get(`http://localhost:5000/students/sorted?order=${selectedSort}`)
+            .get(`${API_URL}/students/sorted?order=${selectedSort}`)
             .then((response) => {
                 setStudents(response.data);
                 setError("");
@@ -141,7 +142,7 @@ export default function Students() {
         setError("");
 
         axios
-            .get("http://localhost:5000/students/export", {
+            .get(`${API_URL}/students/export`, {
                 responseType: "blob",
             })
             .then((response) => {
@@ -178,7 +179,7 @@ export default function Students() {
         setError("");
 
         axios
-            .get("http://localhost:5000/students")
+            .get(`${API_URL}/students`)
             .then((response) => {
                 setStudents(response.data);
             })

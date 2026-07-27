@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import API_URL from "../api";
 
 export default function AddStudent() {
     const initialStudent = {
@@ -35,7 +36,7 @@ export default function AddStudent() {
         setMessage("");
 
         axios
-            .post("http://localhost:5000/students", student)
+            .post(`${API_URL}/students`, student)
             .then((response) => {
                 setMessage(response.data.message);
                 setError("");
