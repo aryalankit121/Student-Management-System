@@ -10,6 +10,8 @@ import os
 app = Flask(__name__)
 CORS(app)
 
+database.setup_database()
+
 ALLOWED_FIELDS = {
     "first_name",
     "last_name",
@@ -218,7 +220,6 @@ def post_student():
         }, 409
 
 if __name__ == "__main__":
-    database.setup_database()
     app.run(
         host="0.0.0.0",
         port=int(os.environ.get("PORT", 5000)),
