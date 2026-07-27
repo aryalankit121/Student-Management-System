@@ -440,7 +440,43 @@ This project provided hands-on experience with:
 
 ## Screenshots
 
-Screenshots and demonstrations of both the command-line application and the REST API will be added as development progresses.
+### Dashboard
+
+![Dashboard](screenshots/dashboard.png)
+
+View live database statistics and access common actions.
+
+---
+
+### Student Records
+
+![Students](screenshots/students-page.png)
+
+Browse, search, edit, delete, sort, and export student records.
+
+---
+
+### Add Student
+
+![Add Student](screenshots/add-student.png)
+
+Validated form for creating new student records.
+
+---
+
+### Edit Student
+
+![Edit Student](screenshots/edit-student.png)
+
+Update student information with real-time validation.
+
+---
+
+### Search & Filtering
+
+![Search](screenshots/search.png)
+
+Search students instantly by Student ID or name.
 
 ---
 
