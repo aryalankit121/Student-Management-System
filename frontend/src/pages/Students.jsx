@@ -109,17 +109,7 @@ export default function Students() {
         setSort(selectedSort);
 
         if (!selectedSort) {
-            axios
-                .get("${API_URL}/students")
-                .then((response) => {
-                    setStudents(response.data);
-                })
-                .catch((error) => {
-                    setError(
-                        error.response?.data?.error ||
-                        "Something went wrong."
-                    );
-                });
+            handleClear();
 
             return;
         }
