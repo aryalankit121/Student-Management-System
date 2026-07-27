@@ -25,8 +25,9 @@ ALLOWED_FIELDS = {
 def home():
     return {
         "project": "Student Management System API",
-        "version": "1.0",
-        "status": "running"
+        "status": "online",
+        "version": "1.0.1",
+        "author": "Ankit Aryal"
     }
 
 @app.route("/students")
